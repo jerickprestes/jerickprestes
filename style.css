@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;400;800&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Mukta', sans-serif;
+    background-color: seashell;
+}
+
+.parent {
+    display: flex;
+}
+
+.sidebar {
+    width: 20%;
+    height: 100%;
+    position: fixed;
+    background-color: rgb(20, 20, 20);
+}
+
+.sidebar-pos {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.img-sidebar {
+    text-align: center;
+}
+
+.img-sidebar img{
+      width: 70%;
+      text-align: center;
+      border: 8px solid rgb(50, 50, 50);
+      border-radius: 50%;
+}
+
+.menu {
+    margin: 20px 0;
+    text-align: center;
+    position: relative;
+}
+
+.menu a{
+    color:seashell;
+    opacity: 0.4;
+    font-size: 19px;
+    display: block;
+    margin-bottom: 20px;
+    text-decoration: none;
+}
+
+.menu a.selected{
+    opacity: 1;
+}
+
+.content {
+    position: absolute;
+    left: 20%;
+    width: 80%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 0 3%;
+}
+
+section.descricao{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+section.descricao h1 {
+    color: rgb(20, 20, 20);
+    font-size: 46px;
+    margin: 0 10px
+}
+
+section.descricao h1 > span,
+section.descricao h2 > span {
+    background-color: rgb(20, 20, 20);
+    color: seashell;
+}
+
+section.descricao h1 > span:hover,
+section.descricao h2 > span:hover {
+    background-color: seashell;
+    color: rgb(20, 20, 20);
+}
+
+section.descricao p {
+    font-style: normal;
+    margin-top: 10px;
+}
+
+section.descricao p > span {
+    font-style: italic;
+}
+
+.icons-social {
+    margin-top: 10px;
+}
+
+.icons-social a{
+    text-decoration: none;
+    color: seashell;
+    background-color: rgb(20, 20, 20);
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    display: inline-block;
+    margin: 0 10px;
+    text-align: center;
+}
+
+.icons-social a:hover{
+    color: rgb(20, 20, 20);
+    background-color: seashell;
+}
+
+.icons-social i {
+    line-height: 40px;
+}
