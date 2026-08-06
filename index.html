@@ -15,8 +15,9 @@
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
-		<!-- Estilização dos Controles do Swiper com Design do Tema Hyperspace -->
+		<!-- Estilização dos Controles do Swiper e Efeitos dos Cards -->
 		<style>
+			/* Swiper Controls */
 			.swiper-button-prev,
 			.swiper-button-next {
 				background: #2A2A2A;
@@ -37,7 +38,7 @@
 			}
 			.swiper-button-prev::after,
 			.swiper-button-next::after {
-				display: none; /* Oculta ícones padrão do Swiper para usar Font Awesome */
+				display: none; /* Oculta ícones padrão do Swiper */
 			}
 			.swiper-pagination-bullet {
 				background: #555555;
@@ -46,6 +47,51 @@
 			.swiper-pagination-bullet-active {
 				background: #EAEAEA;
 				opacity: 1;
+			}
+
+			/* Efeito de hover nos cards da seção sites-trabalhados */
+			#sites-trabalhados .features section {
+				transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+			}
+
+			#sites-trabalhados .features section:hover {
+				transform: translateY(-6px) scale(1.01);
+				box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+				z-index: 10;
+			}
+
+			/* Imagem de fundo no hover - fica nítida e com menos overlay */
+			#sites-trabalhados .features section:hover > div:first-child {
+				filter: blur(0px) brightness(1);
+				transform: scale(1);
+			}
+
+			/* Overlay no hover - fica mais transparente */
+			#sites-trabalhados .features section:hover > div:nth-child(2) {
+				opacity: 0.4;
+			}
+
+			/* Texto no hover - ganha destaque */
+			#sites-trabalhados .features section:hover h3 {
+				color: #FFFFFF;
+				text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+			}
+
+			#sites-trabalhados .features section:hover p {
+				color: #EAEAEA;
+				text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+			}
+
+			#sites-trabalhados .features section:hover .button {
+				border-color: #EAEAEA !important;
+				background: rgba(234, 234, 234, 0.1);
+				backdrop-filter: blur(4px);
+			}
+
+			/* Ícone no hover - animação sutil */
+			#sites-trabalhados .features section:hover .icon.major {
+				transform: scale(1.1) rotate(5deg);
+				transition: transform 0.4s ease;
 			}
 		</style>
 	</head>
@@ -100,77 +146,322 @@
 							<p>Projetos e plataformas web desenvolvidos focando em alta conversão, responsividade e experiência do usuário.</p>
 							
 							<div class="features">
-								<section>
-									<span class="icon solid major fa-shopping-cart"></span>
-									<h3>TechStore E-commerce</h3>
-									<p>Loja virtual com WooCommerce e automação</p>
-									<ul class="actions">
-										<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small">Ver site</a></li>
-									</ul>
+
+								<!-- Card 1: TechStore E-commerce -->
+								<section style="position: relative; overflow: hidden; padding: 3.5em 3em 1em 7em; min-height: 180px; cursor: pointer; transition: all 0.3s ease; border-radius: 0.25em; background: #2A2A2A;">
+									<!-- IMAGEM DE FUNDO -->
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background-image: url('https://picsum.photos/seed/techstore/800/600');
+										background-size: cover;
+										background-position: center;
+										background-repeat: no-repeat;
+										filter: blur(8px) brightness(0.3);
+										transform: scale(1.1);
+										transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+										z-index: 0;
+									"></div>
+									
+									<!-- OVERLAY DE COR (para contraste) -->
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background: linear-gradient(135deg, rgba(18,18,18,0.85) 0%, rgba(42,42,42,0.7) 100%);
+										transition: opacity 0.5s ease;
+										z-index: 1;
+									"></div>
+									
+									<!-- CONTEÚDO DO CARD -->
+									<div style="position: relative; z-index: 2;">
+										<span class="icon solid major fa-shopping-cart" style="position: relative; left: 0; top: 0; margin: 0 0 1.3em 0;"></span>
+										<h3 style="color: #EAEAEA;">TechStore E-commerce</h3>
+										<p style="color: #CCCCCC; margin: 0 0 1.5em 0;">Loja virtual com WooCommerce e automação</p>
+										<ul class="actions" style="margin: 0;">
+											<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small" style="border-color: rgba(255,255,255,0.3) !important; color: #EAEAEA !important;">Ver site</a></li>
+										</ul>
+									</div>
 								</section>
 
-								<section>
-									<span class="icon solid major fa-heartbeat"></span>
-									<h3>Saúde Digital</h3>
-									<p>Landing page para clínica médica</p>
-									<ul class="actions">
-										<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small">Ver site</a></li>
-									</ul>
+								<!-- Card 2: Saúde Digital -->
+								<section style="position: relative; overflow: hidden; padding: 3.5em 3em 1em 7em; min-height: 180px; cursor: pointer; transition: all 0.3s ease; border-radius: 0.25em; background: #2A2A2A;">
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background-image: url('https://picsum.photos/seed/saudedigital/800/600');
+										background-size: cover;
+										background-position: center;
+										background-repeat: no-repeat;
+										filter: blur(8px) brightness(0.3);
+										transform: scale(1.1);
+										transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+										z-index: 0;
+									"></div>
+									
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background: linear-gradient(135deg, rgba(18,18,18,0.85) 0%, rgba(42,42,42,0.7) 100%);
+										transition: opacity 0.5s ease;
+										z-index: 1;
+									"></div>
+									
+									<div style="position: relative; z-index: 2;">
+										<span class="icon solid major fa-heartbeat" style="position: relative; left: 0; top: 0; margin: 0 0 1.3em 0;"></span>
+										<h3 style="color: #EAEAEA;">Saúde Digital</h3>
+										<p style="color: #CCCCCC; margin: 0 0 1.5em 0;">Landing page para clínica médica</p>
+										<ul class="actions" style="margin: 0;">
+											<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small" style="border-color: rgba(255,255,255,0.3) !important; color: #EAEAEA !important;">Ver site</a></li>
+										</ul>
+									</div>
 								</section>
 
-								<section>
-									<span class="icon solid major fa-paint-brush"></span>
-									<h3>Agência Creative</h3>
-									<p>Site institucional com portfólio</p>
-									<ul class="actions">
-										<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small">Ver site</a></li>
-									</ul>
+								<!-- Card 3: Agência Creative -->
+								<section style="position: relative; overflow: hidden; padding: 3.5em 3em 1em 7em; min-height: 180px; cursor: pointer; transition: all 0.3s ease; border-radius: 0.25em; background: #2A2A2A;">
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background-image: url('https://picsum.photos/seed/agenciacreative/800/600');
+										background-size: cover;
+										background-position: center;
+										background-repeat: no-repeat;
+										filter: blur(8px) brightness(0.3);
+										transform: scale(1.1);
+										transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+										z-index: 0;
+									"></div>
+									
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background: linear-gradient(135deg, rgba(18,18,18,0.85) 0%, rgba(42,42,42,0.7) 100%);
+										transition: opacity 0.5s ease;
+										z-index: 1;
+									"></div>
+									
+									<div style="position: relative; z-index: 2;">
+										<span class="icon solid major fa-paint-brush" style="position: relative; left: 0; top: 0; margin: 0 0 1.3em 0;"></span>
+										<h3 style="color: #EAEAEA;">Agência Creative</h3>
+										<p style="color: #CCCCCC; margin: 0 0 1.5em 0;">Site institucional com portfólio</p>
+										<ul class="actions" style="margin: 0;">
+											<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small" style="border-color: rgba(255,255,255,0.3) !important; color: #EAEAEA !important;">Ver site</a></li>
+										</ul>
+									</div>
 								</section>
 
-								<section>
-									<span class="icon solid major fa-utensils"></span>
-									<h3>Food Delivery App</h3>
-									<p>Aplicativo web de entregas</p>
-									<ul class="actions">
-										<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small">Ver site</a></li>
-									</ul>
+								<!-- Card 4: Food Delivery App -->
+								<section style="position: relative; overflow: hidden; padding: 3.5em 3em 1em 7em; min-height: 180px; cursor: pointer; transition: all 0.3s ease; border-radius: 0.25em; background: #2A2A2A;">
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background-image: url('https://picsum.photos/seed/fooddelivery/800/600');
+										background-size: cover;
+										background-position: center;
+										background-repeat: no-repeat;
+										filter: blur(8px) brightness(0.3);
+										transform: scale(1.1);
+										transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+										z-index: 0;
+									"></div>
+									
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background: linear-gradient(135deg, rgba(18,18,18,0.85) 0%, rgba(42,42,42,0.7) 100%);
+										transition: opacity 0.5s ease;
+										z-index: 1;
+									"></div>
+									
+									<div style="position: relative; z-index: 2;">
+										<span class="icon solid major fa-utensils" style="position: relative; left: 0; top: 0; margin: 0 0 1.3em 0;"></span>
+										<h3 style="color: #EAEAEA;">Food Delivery App</h3>
+										<p style="color: #CCCCCC; margin: 0 0 1.5em 0;">Aplicativo web de entregas</p>
+										<ul class="actions" style="margin: 0;">
+											<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small" style="border-color: rgba(255,255,255,0.3) !important; color: #EAEAEA !important;">Ver site</a></li>
+										</ul>
+									</div>
 								</section>
 
-								<section>
-									<span class="icon solid major fa-graduation-cap"></span>
-									<h3>Educação Online</h3>
-									<p>Plataforma de cursos EAD</p>
-									<ul class="actions">
-										<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small">Ver site</a></li>
-									</ul>
+								<!-- Card 5: Educação Online -->
+								<section style="position: relative; overflow: hidden; padding: 3.5em 3em 1em 7em; min-height: 180px; cursor: pointer; transition: all 0.3s ease; border-radius: 0.25em; background: #2A2A2A;">
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background-image: url('https://picsum.photos/seed/educacao/800/600');
+										background-size: cover;
+										background-position: center;
+										background-repeat: no-repeat;
+										filter: blur(8px) brightness(0.3);
+										transform: scale(1.1);
+										transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+										z-index: 0;
+									"></div>
+									
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background: linear-gradient(135deg, rgba(18,18,18,0.85) 0%, rgba(42,42,42,0.7) 100%);
+										transition: opacity 0.5s ease;
+										z-index: 1;
+									"></div>
+									
+									<div style="position: relative; z-index: 2;">
+										<span class="icon solid major fa-graduation-cap" style="position: relative; left: 0; top: 0; margin: 0 0 1.3em 0;"></span>
+										<h3 style="color: #EAEAEA;">Educação Online</h3>
+										<p style="color: #CCCCCC; margin: 0 0 1.5em 0;">Plataforma de cursos EAD</p>
+										<ul class="actions" style="margin: 0;">
+											<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small" style="border-color: rgba(255,255,255,0.3) !important; color: #EAEAEA !important;">Ver site</a></li>
+										</ul>
+									</div>
 								</section>
 
-								<section>
-									<span class="icon solid major fa-home"></span>
-									<h3>Imobiliária Prime</h3>
-									<p>Portal de imóveis com busca avançada</p>
-									<ul class="actions">
-										<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small">Ver site</a></li>
-									</ul>
+								<!-- Card 6: Imobiliária Prime -->
+								<section style="position: relative; overflow: hidden; padding: 3.5em 3em 1em 7em; min-height: 180px; cursor: pointer; transition: all 0.3s ease; border-radius: 0.25em; background: #2A2A2A;">
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background-image: url('https://picsum.photos/seed/imobiliaria/800/600');
+										background-size: cover;
+										background-position: center;
+										background-repeat: no-repeat;
+										filter: blur(8px) brightness(0.3);
+										transform: scale(1.1);
+										transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+										z-index: 0;
+									"></div>
+									
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background: linear-gradient(135deg, rgba(18,18,18,0.85) 0%, rgba(42,42,42,0.7) 100%);
+										transition: opacity 0.5s ease;
+										z-index: 1;
+									"></div>
+									
+									<div style="position: relative; z-index: 2;">
+										<span class="icon solid major fa-home" style="position: relative; left: 0; top: 0; margin: 0 0 1.3em 0;"></span>
+										<h3 style="color: #EAEAEA;">Imobiliária Prime</h3>
+										<p style="color: #CCCCCC; margin: 0 0 1.5em 0;">Portal de imóveis com busca avançada</p>
+										<ul class="actions" style="margin: 0;">
+											<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small" style="border-color: rgba(255,255,255,0.3) !important; color: #EAEAEA !important;">Ver site</a></li>
+										</ul>
+									</div>
 								</section>
 
-								<section>
-									<span class="icon solid major fa-chart-line"></span>
-									<h3>Fintech Solutions</h3>
-									<p>Dashboard financeiro com gráficos</p>
-									<ul class="actions">
-										<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small">Ver site</a></li>
-									</ul>
+								<!-- Card 7: Fintech Solutions -->
+								<section style="position: relative; overflow: hidden; padding: 3.5em 3em 1em 7em; min-height: 180px; cursor: pointer; transition: all 0.3s ease; border-radius: 0.25em; background: #2A2A2A;">
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background-image: url('https://picsum.photos/seed/fintech/800/600');
+										background-size: cover;
+										background-position: center;
+										background-repeat: no-repeat;
+										filter: blur(8px) brightness(0.3);
+										transform: scale(1.1);
+										transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+										z-index: 0;
+									"></div>
+									
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background: linear-gradient(135deg, rgba(18,18,18,0.85) 0%, rgba(42,42,42,0.7) 100%);
+										transition: opacity 0.5s ease;
+										z-index: 1;
+									"></div>
+									
+									<div style="position: relative; z-index: 2;">
+										<span class="icon solid major fa-chart-line" style="position: relative; left: 0; top: 0; margin: 0 0 1.3em 0;"></span>
+										<h3 style="color: #EAEAEA;">Fintech Solutions</h3>
+										<p style="color: #CCCCCC; margin: 0 0 1.5em 0;">Dashboard financeiro com gráficos</p>
+										<ul class="actions" style="margin: 0;">
+											<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small" style="border-color: rgba(255,255,255,0.3) !important; color: #EAEAEA !important;">Ver site</a></li>
+										</ul>
+									</div>
 								</section>
 
-								<section>
-									<span class="icon solid major fa-newspaper"></span>
-									<h3>Blog Tech News</h3>
-									<p>Blog com foco em tecnologia</p>
-									<ul class="actions">
-										<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small">Ver site</a></li>
-									</ul>
+								<!-- Card 8: Blog Tech News -->
+								<section style="position: relative; overflow: hidden; padding: 3.5em 3em 1em 7em; min-height: 180px; cursor: pointer; transition: all 0.3s ease; border-radius: 0.25em; background: #2A2A2A;">
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background-image: url('https://picsum.photos/seed/blogtech/800/600');
+										background-size: cover;
+										background-position: center;
+										background-repeat: no-repeat;
+										filter: blur(8px) brightness(0.3);
+										transform: scale(1.1);
+										transition: filter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+										z-index: 0;
+									"></div>
+									
+									<div style="
+										position: absolute;
+										top: 0;
+										left: 0;
+										width: 100%;
+										height: 100%;
+										background: linear-gradient(135deg, rgba(18,18,18,0.85) 0%, rgba(42,42,42,0.7) 100%);
+										transition: opacity 0.5s ease;
+										z-index: 1;
+									"></div>
+									
+									<div style="position: relative; z-index: 2;">
+										<span class="icon solid major fa-newspaper" style="position: relative; left: 0; top: 0; margin: 0 0 1.3em 0;"></span>
+										<h3 style="color: #EAEAEA;">Blog Tech News</h3>
+										<p style="color: #CCCCCC; margin: 0 0 1.5em 0;">Blog com foco em tecnologia</p>
+										<ul class="actions" style="margin: 0;">
+											<li><a href="#" target="_blank" rel="noopener noreferrer" class="button small" style="border-color: rgba(255,255,255,0.3) !important; color: #EAEAEA !important;">Ver site</a></li>
+										</ul>
+									</div>
 								</section>
+
 							</div>
 						</div>
 					</section>
