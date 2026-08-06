@@ -61,9 +61,11 @@
 			}
 
 			/* Imagem de fundo no hover - fica nítida e com menos overlay */
+			/* !important necessário pois o blur base é aplicado via inline style nos <div>,
+			   que tem especificidade maior que a regra de #id abaixo */
 			#sites-trabalhados .features section:hover > div:first-child {
-				filter: blur(0px) brightness(1);
-				transform: scale(1);
+				filter: blur(0px) brightness(1) !important;
+				transform: scale(1) !important;
 			}
 
 			/* Overlay no hover - fica mais transparente */
@@ -103,12 +105,12 @@
 					<nav>
 						<ul>
 							<li><a href="#intro">Início</a></li>
-							<li><a href="#perfil">Perfil</a></li>
+							<!--<li><a href="#perfil">Perfil</a></li>
 							<li><a href="#sites-trabalhados">Sites Trabalhados</a></li>
 							<li><a href="#layouts-produzidos">Layouts Produzidos</a></li>
 							<li><a href="#experiencia">Experiência</a></li>
 							<li><a href="#habilidades">Habilidades</a></li>
-							<li><a href="#contato">Contato</a></li>
+							<li><a href="#contato">Contato</a></li>-->
 						</ul>
 					</nav>
 				</div>
@@ -124,7 +126,7 @@
 							<h1>Erick Prestes</h1>
 							<p>Desenvolvedor Web Pleno com 6 anos de experiência em tecnologia, especializado em ecossistemas WordPress, WooCommerce e Elementor.</p>
 							<ul class="actions">
-								<li><a href="#perfil" class="button scrolly">Ver currículo</a></li>
+								<li><a href="J-Erick-Prestes.pdf" class="button scrolly">Ver currículo</a></li>
 							</ul>
 						</div>
 					</section>
