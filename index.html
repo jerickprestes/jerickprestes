@@ -180,6 +180,27 @@
 				text-align: center;
 				color: #EAEAEA;
 			}
+
+			/* Efeito "marquee vertical" nas imagens da seção Layouts Produzidos */
+			/* O container (.layout-item) mantém o recorte 3:4 e esconde o excesso;
+			   a imagem em si é alinhada pelo topo e, no hover, desliza para cima
+			   revelando o print completo, depois volta ao soltar o mouse. */
+			.layout-scan-img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: auto;
+				display: block;
+				object-position: top;
+				transform: translateY(0);
+				transition: transform 6s ease-in-out;
+				will-change: transform;
+			}
+
+			.layout-item:hover .layout-scan-img {
+				transform: translateY(-55%);
+			}
 		</style>
 	</head>
 	<body class="is-preload">
@@ -605,8 +626,8 @@
 
 									<!-- Layout 1: Clube LMA -->
 									<div class="swiper-slide">
-										<div class="layout-item" style="position:relative; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
-											<img src="https://picsum.photos/seed/layout1/800/600" alt="Layout Clube LMA" loading="lazy" style="width:100%; aspect-ratio: 3/4; object-fit:cover; display:block;" />
+										<div class="layout-item" style="position:relative; aspect-ratio: 3/4; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
+											<img src="images/screenshots/clube-lma.jpg" alt="Layout Clube LMA" loading="lazy" class="layout-scan-img" />
 											<div style="position:absolute; bottom:0; left:0; right:0; background:rgba(18,18,18,0.85); padding:1.5em; border-radius:0 0 0.25em 0.25em;">
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Clube de Negócios LMA</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Design moderno focado em conversão e UX</p>
@@ -617,8 +638,8 @@
 
 									<!-- Layout 2: Fillos -->
 									<div class="swiper-slide">
-										<div class="layout-item" style="position:relative; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
-											<img src="https://picsum.photos/seed/layout2/800/600" alt="Layout Fillos" loading="lazy" style="width:100%; aspect-ratio: 3/4; object-fit:cover; display:block;" />
+										<div class="layout-item" style="position:relative; aspect-ratio: 3/4; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
+											<img src="images/screenshots/fillos.jpg" alt="Layout Fillos" loading="lazy" class="layout-scan-img" />
 											<div style="position:absolute; bottom:0; left:0; right:0; background:rgba(18,18,18,0.85); padding:1.5em; border-radius:0 0 0.25em 0.25em;">
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Fillos</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Layout institucional clean e responsivo</p>
@@ -629,8 +650,8 @@
 
 									<!-- Layout 3: Mayra Hall -->
 									<div class="swiper-slide">
-										<div class="layout-item" style="position:relative; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
-											<img src="https://picsum.photos/seed/layout3/800/600" alt="Layout Mayra Hall" loading="lazy" style="width:100%; aspect-ratio: 3/4; object-fit:cover; display:block;" />
+										<div class="layout-item" style="position:relative; aspect-ratio: 3/4; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
+											<img src="images/screenshots/mayra-hall.jpg" alt="Layout Mayra Hall" loading="lazy" class="layout-scan-img" />
 											<div style="position:absolute; bottom:0; left:0; right:0; background:rgba(18,18,18,0.85); padding:1.5em; border-radius:0 0 0.25em 0.25em;">
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Mayra Hall</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Interface para análise de dados e métricas</p>
@@ -639,10 +660,10 @@
 										</div>
 									</div>
 
-									<!-- Layout 4 -->
+									<!-- Layout 4: Jornada Literária 2025 -->
 									<div class="swiper-slide">
-										<div class="layout-item" style="position:relative; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
-											<img src="https://picsum.photos/seed/layout4/800/600" alt="Layout Jornada Literária 2025" loading="lazy" style="width:100%; aspect-ratio: 3/4; object-fit:cover; display:block;" />
+										<div class="layout-item" style="position:relative; aspect-ratio: 3/4; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
+											<img src="images/screenshots/jornada-literaria-2025.jpg" alt="Layout Jornada Literária 2025" loading="lazy" class="layout-scan-img" />
 											<div style="position:absolute; bottom:0; left:0; right:0; background:rgba(18,18,18,0.85); padding:1.5em; border-radius:0 0 0.25em 0.25em;">
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Jornada Literária 2025</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Página de captura otimizada para alta conversão</p>
@@ -651,10 +672,10 @@
 										</div>
 									</div>
 
-									<!-- Layout 5 -->
+									<!-- Layout 5: SP Leituras 2025 -->
 									<div class="swiper-slide">
-										<div class="layout-item" style="position:relative; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
-											<img src="https://picsum.photos/seed/layout5/800/600" alt="Layout SP Leituras 2025" loading="lazy" style="width:100%; aspect-ratio: 3/4; object-fit:cover; display:block;" />
+										<div class="layout-item" style="position:relative; aspect-ratio: 3/4; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
+											<img src="images/screenshots/sp-leituras-2025.jpg" alt="Layout SP Leituras 2025" loading="lazy" class="layout-scan-img" />
 											<div style="position:absolute; bottom:0; left:0; right:0; background:rgba(18,18,18,0.85); padding:1.5em; border-radius:0 0 0.25em 0.25em;">
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">SP Leituras 2025</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Interface EAD intuitiva para alunos</p>
@@ -663,10 +684,10 @@
 										</div>
 									</div>
 
-									<!-- Layout 6 -->
+									<!-- Layout 6: Cookies da Kels -->
 									<div class="swiper-slide">
-										<div class="layout-item" style="position:relative; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
-											<img src="https://picsum.photos/seed/layout6/800/600" alt="Layout Cookies da Kel" loading="lazy" style="width:100%; aspect-ratio: 3/4; object-fit:cover; display:block;" />
+										<div class="layout-item" style="position:relative; aspect-ratio: 3/4; border-radius:0.25em; overflow:hidden; background:#2A2A2A;">
+											<img src="images/screenshots/cookies-da-kels.jpg" alt="Layout Cookies da Kels" loading="lazy" class="layout-scan-img" />
 											<div style="position:absolute; bottom:0; left:0; right:0; background:rgba(18,18,18,0.85); padding:1.5em; border-radius:0 0 0.25em 0.25em;">
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Cookies da Kel</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Design Mobile-First para delivery</p>
@@ -692,7 +713,6 @@
 							<div class="content">
 								<div class="inner">
 									<h2>Validação e Alinhamento Técnico com Clientes</h2>
-									<p><strong>Período:</strong> Agosto de 2025 – Agosto de 2026 (1 ano e 1 mês)</p>
 									<p>Responsável pela validação de projetos web diretamente com clientes, garantindo alinhamento técnico, qualidade de entrega e cumprimento de escopo.</p>
 								</div>
 							</div>
@@ -702,7 +722,6 @@
 							<div class="content">
 								<div class="inner">
 									<h2>Planejamento e Gestão Estratégica de Projetos</h2>
-									<p><strong>Período:</strong> Janeiro de 2025 – Outubro de 2025 (10 meses)</p>
 									<p>Atuação focada na análise, planejamento e gestão estratégica de projetos web, otimizando fluxos de trabalho e alocação de recursos técnicos.</p>
 								</div>
 							</div>
@@ -712,7 +731,6 @@
 							<div class="content">
 								<div class="inner">
 									<h2>Desenvolvimento Web e E-commerce</h2>
-									<p><strong>Período:</strong> Maio de 2024 – Julho de 2025 (1 ano e 3 meses)</p>
 									<p>Responsável pela elaboração e produção de layouts focados em conversão para landing pages e websites institucionais, além da criação e personalização avançada de e-commerces com PHP/JS.</p>
 								</div>
 							</div>
