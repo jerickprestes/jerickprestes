@@ -201,6 +201,140 @@
 			.layout-item:hover .layout-scan-img {
 				transform: translateY(-55%);
 			}
+
+			/* Cursor de "ampliar" ao passar sobre os cards do carrossel de layouts */
+			.layout-item {
+				cursor: zoom-in;
+			}
+
+			/* ===================================================================
+			   Preview customizado (estilo Figma) para os Layouts Produzidos
+			   - Overlay escuro cobrindo toda a página, acima de qualquer elemento
+			     do template (sidebar, wrapper etc.)
+			   - Caixa da imagem com ~80% da largura da viewport, alinhada ao topo
+			   - Scroll vertical dentro da própria caixa para explorar o print
+			     inteiro, simulando a navegação real no site
+			   =================================================================== */
+			.layout-preview-overlay {
+				position: fixed;
+				inset: 0;
+				background: rgba(0,0,0,0.88);
+				z-index: 999999;
+				display: flex;
+				align-items: flex-start;
+				justify-content: center;
+				opacity: 0;
+				visibility: hidden;
+				transition: opacity 0.25s ease;
+			}
+
+			.layout-preview-overlay.active {
+				opacity: 1;
+				visibility: visible;
+			}
+
+			.layout-preview-box {
+				position: relative;
+				width: 80vw;
+				max-width: 80vw;
+				height: 92vh;
+				max-height: 92vh;
+				margin-top: 4vh;
+				background: #1A1A1A;
+				border-radius: 0.4em;
+				overflow-y: auto;
+				overflow-x: hidden;
+				-webkit-overflow-scrolling: touch;
+				box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+			}
+
+			.layout-preview-box::-webkit-scrollbar {
+				width: 8px;
+			}
+			.layout-preview-box::-webkit-scrollbar-track {
+				background: rgba(255,255,255,0.05);
+			}
+			.layout-preview-box::-webkit-scrollbar-thumb {
+				background: rgba(234,234,234,0.35);
+				border-radius: 4px;
+			}
+
+			.layout-preview-box img {
+				width: 100%;
+				height: auto;
+				display: block;
+			}
+
+			.layout-preview-titlebar {
+				position: sticky;
+				top: 0;
+				left: 0;
+				width: 100%;
+				background: rgba(18,18,18,0.92);
+				color: #EAEAEA;
+				padding: 0.85em 1.5em;
+				font-size: 0.9em;
+				font-weight: bold;
+				letter-spacing: 0.05em;
+				z-index: 2;
+				border-bottom: 1px solid #333333;
+			}
+
+			.layout-preview-close,
+			.layout-preview-nav {
+				position: fixed;
+				background: #2A2A2A;
+				color: #EAEAEA;
+				border: 1px solid #555555;
+				border-radius: 50%;
+				width: 46px;
+				height: 46px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+				z-index: 1000000;
+				transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+			}
+
+			.layout-preview-close:hover,
+			.layout-preview-nav:hover {
+				border-color: #EAEAEA;
+				background: #3A3A3A;
+			}
+
+			.layout-preview-close {
+				top: 2vh;
+				right: 3vw;
+			}
+
+			.layout-preview-prev {
+				top: 50%;
+				left: 3vw;
+				transform: translateY(-50%);
+			}
+
+			.layout-preview-next {
+				top: 50%;
+				right: 3vw;
+				transform: translateY(-50%);
+			}
+
+			@media (max-width: 768px) {
+				.layout-preview-box {
+					width: 92vw;
+					max-width: 92vw;
+				}
+				.layout-preview-prev {
+					left: 1vw;
+				}
+				.layout-preview-next {
+					right: 1vw;
+				}
+				.layout-preview-close {
+					right: 2vw;
+				}
+			}
 		</style>
 	</head>
 	<body class="is-preload">
@@ -608,7 +742,7 @@
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Clube de Negócios LMA</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Design moderno focado em conversão e UX</p>
 											</div>
-											<a href="#" target="_blank" rel="noopener noreferrer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver layout E-commerce Premium"></a>
+											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/clube-lma.jpg" data-title="Clube de Negócios LMA" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Clube de Negócios LMA"></a>
 										</div>
 									</div>
 
@@ -620,7 +754,7 @@
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Fillos</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Layout institucional clean e responsivo</p>
 											</div>
-											<a href="#" target="_blank" rel="noopener noreferrer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver layout Portal Corporativo"></a>
+											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/fillos.jpg" data-title="Fillos" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Fillos"></a>
 										</div>
 									</div>
 
@@ -632,7 +766,7 @@
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Mayra Hall</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Interface para análise de dados e métricas</p>
 											</div>
-											<a href="#" target="_blank" rel="noopener noreferrer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver layout SaaS Dashboard"></a>
+											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/mayra-hall.jpg" data-title="Mayra Hall" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Mayra Hall"></a>
 										</div>
 									</div>
 
@@ -644,7 +778,7 @@
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Jornada Literária 2025</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Página de captura otimizada para alta conversão</p>
 											</div>
-											<a href="#" target="_blank" rel="noopener noreferrer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver layout Jornada Literária 2025"></a>
+											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/jornada-literaria-2025.jpg" data-title="Jornada Literária 2025" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Jornada Literária 2025"></a>
 										</div>
 									</div>
 
@@ -656,7 +790,7 @@
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">SP Leituras 2025</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Interface EAD intuitiva para alunos</p>
 											</div>
-											<a href="#" target="_blank" rel="noopener noreferrer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver layout SP Leituras 2025"></a>
+											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/sp-leituras-2025.jpg" data-title="SP Leituras 2025" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout SP Leituras 2025"></a>
 										</div>
 									</div>
 
@@ -668,7 +802,7 @@
 												<h3 style="color:#EAEAEA; margin:0; font-size:1.1em;">Cookies da Kel</h3>
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Design Mobile-First para delivery</p>
 											</div>
-											<a href="#" target="_blank" rel="noopener noreferrer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver layout Cookies da Kel"></a>
+											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/cookies-da-kels.jpg" data-title="Cookies da Kel" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Cookies da Kel"></a>
 										</div>
 									</div>
 
@@ -825,6 +959,17 @@
 				</div>
 			</footer>
 
+		<!-- Preview customizado dos Layouts Produzidos (estilo Figma) -->
+			<div class="layout-preview-overlay" id="layoutPreviewOverlay" aria-hidden="true">
+				<button type="button" class="layout-preview-close" id="layoutPreviewClose" aria-label="Fechar preview"><i class="fas fa-times"></i></button>
+				<button type="button" class="layout-preview-nav layout-preview-prev" id="layoutPreviewPrev" aria-label="Layout anterior"><i class="fas fa-chevron-left"></i></button>
+				<button type="button" class="layout-preview-nav layout-preview-next" id="layoutPreviewNext" aria-label="Próximo layout"><i class="fas fa-chevron-right"></i></button>
+				<div class="layout-preview-box" id="layoutPreviewBox">
+					<div class="layout-preview-titlebar" id="layoutPreviewTitle"></div>
+					<img src="" alt="" id="layoutPreviewImg" />
+				</div>
+			</div>
+
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
@@ -869,6 +1014,83 @@
 								slidesPerView: 3,
 								spaceBetween: 30
 							}
+						}
+					});
+
+					// ============================================================
+					// Preview customizado dos Layouts Produzidos (estilo Figma)
+					// - Abre a imagem clicada em ~80% de largura, alinhada ao topo
+					// - Scroll vertical dentro da caixa para ver o print completo
+					// - Navega entre os layouts com as setas, resetando o scroll
+					// - Fecha com o X, clicando fora da caixa ou com a tecla Esc
+					// ============================================================
+					const previewTriggers = Array.from(document.querySelectorAll('.layout-preview-trigger'));
+					const previewOverlay = document.getElementById('layoutPreviewOverlay');
+					const previewBox = document.getElementById('layoutPreviewBox');
+					const previewImg = document.getElementById('layoutPreviewImg');
+					const previewTitle = document.getElementById('layoutPreviewTitle');
+					const previewClose = document.getElementById('layoutPreviewClose');
+					const previewPrev = document.getElementById('layoutPreviewPrev');
+					const previewNext = document.getElementById('layoutPreviewNext');
+
+					let currentPreviewIndex = 0;
+
+					function loadPreview(index) {
+						if (!previewTriggers.length) return;
+						currentPreviewIndex = (index + previewTriggers.length) % previewTriggers.length;
+						const trigger = previewTriggers[currentPreviewIndex];
+						previewImg.src = trigger.getAttribute('data-src');
+						previewImg.alt = trigger.getAttribute('data-title') || '';
+						previewTitle.textContent = trigger.getAttribute('data-title') || '';
+						previewBox.scrollTop = 0;
+					}
+
+					function openPreview(index) {
+						loadPreview(index);
+						previewOverlay.classList.add('active');
+						previewOverlay.setAttribute('aria-hidden', 'false');
+						document.body.style.overflow = 'hidden';
+					}
+
+					function closePreview() {
+						previewOverlay.classList.remove('active');
+						previewOverlay.setAttribute('aria-hidden', 'true');
+						document.body.style.overflow = '';
+					}
+
+					previewTriggers.forEach(function (trigger, index) {
+						trigger.addEventListener('click', function (e) {
+							e.preventDefault();
+							openPreview(index);
+						});
+					});
+
+					previewClose.addEventListener('click', closePreview);
+
+					previewPrev.addEventListener('click', function () {
+						loadPreview(currentPreviewIndex - 1);
+					});
+
+					previewNext.addEventListener('click', function () {
+						loadPreview(currentPreviewIndex + 1);
+					});
+
+					// Fecha ao clicar fora da caixa (na área escura do overlay)
+					previewOverlay.addEventListener('click', function (e) {
+						if (e.target === previewOverlay) {
+							closePreview();
+						}
+					});
+
+					// Fecha com Esc e navega com as setas do teclado
+					document.addEventListener('keydown', function (e) {
+						if (!previewOverlay.classList.contains('active')) return;
+						if (e.key === 'Escape') {
+							closePreview();
+						} else if (e.key === 'ArrowLeft') {
+							loadPreview(currentPreviewIndex - 1);
+						} else if (e.key === 'ArrowRight') {
+							loadPreview(currentPreviewIndex + 1);
 						}
 					});
 				});
