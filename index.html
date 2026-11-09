@@ -166,19 +166,112 @@
 				}
 			}
 
-			/* Ícones na lista "Principais Entregas e Desafios" */
-			.desafios-list li {
-				display: flex;
-				align-items: flex-start;
-				gap: 0.85em;
-			}
 
-			.desafios-list li i {
-				flex-shrink: 0;
-				width: 1.25em;
-				margin-top: 0.2em;
-				text-align: center;
+			/* Hero: informações de contato */
+			.hero-contact {
+				list-style: none;
+				padding: 0;
+				margin: 1.75em 0 0 0;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.6em 2em;
+			}
+			.hero-contact li { padding: 0; display: flex; align-items: center; gap: 0.6em; font-size: 0.95em; }
+			.hero-contact i { width: 1.1em; text-align: center; color: #EAEAEA; opacity: 0.8; }
+			.hero-contact a { border-bottom: 0; }
+			.hero-social { margin: 1.25em 0 0 0; }
+			#intro .actions li:first-child { padding-left: 0; }
+			.brainstorm-form input[type="tel"] { height: 2.75em; }
+
+			/* Lupa no canto superior direito das thumbnails de layout */
+			.layout-zoom-icon {
+				position: absolute;
+				top: 0.75em;
+				right: 0.75em;
+				z-index: 3;
+				width: 2.4em;
+				height: 2.4em;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				background: rgba(18,18,18,0.75);
+				border: 1px solid #555555;
 				color: #EAEAEA;
+				font-size: 0.9em;
+				pointer-events: none;
+				transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+			}
+			.layout-item:hover .layout-zoom-icon { background: #EAEAEA; color: #121212; border-color: #EAEAEA; transform: scale(1.1); }
+
+			.layout-project-action { margin-top: 1em; text-align: center; }
+			.layout-project-action .button { margin: 0; }
+
+			/* Formulário de contato (off-canvas, sobe da base da tela) */
+			.contact-backdrop {
+				position: fixed; inset: 0; z-index: 100000;
+				background: rgba(0,0,0,0.65);
+				-webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+				opacity: 0; visibility: hidden;
+				transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+			}
+			.contact-backdrop.is-open { opacity: 1; visibility: visible; transition-delay: 0s; }
+			.contact-drawer {
+				position: fixed; left: 0; right: 0; bottom: 0; z-index: 100001;
+				width: min(760px, 100%); margin: 0 auto; box-sizing: border-box;
+				display: flex; flex-direction: column;
+				max-height: 92vh; max-height: 92dvh;
+				background: #1A1A1A; color: #EAEAEA;
+				border: 1px solid #333333; border-bottom: 0;
+				border-radius: 22px 22px 0 0;
+				box-shadow: 0 -18px 60px rgba(0,0,0,0.6);
+				transform: translateY(100%); visibility: hidden;
+				transition: transform 0.5s cubic-bezier(0.22, 0.8, 0.24, 1), visibility 0s linear 0.5s;
+				outline: none;
+			}
+			.contact-drawer.is-open { transform: translateY(0); visibility: visible; transition-delay: 0s; }
+			.contact-drawer::before {
+				content: ""; position: absolute; top: 0.7rem; left: 50%;
+				width: 44px; height: 4px; margin-left: -22px; border-radius: 999px;
+				background: rgba(234,234,234,0.28);
+			}
+			.contact-close {
+				position: absolute; top: 1rem; right: 1rem; z-index: 2;
+				width: 40px; height: 40px; padding: 0; margin: 0;
+				display: inline-flex; align-items: center; justify-content: center;
+				border-radius: 50%; border: 1px solid #555555; background: transparent;
+				color: #EAEAEA; cursor: pointer; box-shadow: none;
+				transition: background 0.2s ease, border-color 0.2s ease;
+			}
+			.contact-close:hover { background: rgba(234,234,234,0.12); border-color: #EAEAEA; }
+			.contact-close svg { width: 18px; height: 18px; }
+			.contact-scroll {
+				flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+				padding: 2.6rem 2rem calc(2rem + env(safe-area-inset-bottom, 0px));
+			}
+			.contact-drawer .form-wrap { max-width: 640px; margin: 0 auto; }
+			.contact-drawer .form-head { text-align: center; margin-bottom: 1.6rem; }
+			.contact-drawer .form-head h2 { margin: 0 0 0.5em; font-size: 1.7rem; }
+			.contact-drawer .form-head p { margin: 0; font-size: 0.95em; color: #AAAAAA; }
+			.brainstorm-form {
+				display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+				background: #2A2A2A; padding: 1.75rem; border-radius: 14px;
+			}
+			.brainstorm-form .field { display: flex; flex-direction: column; gap: 0.4rem; }
+			.brainstorm-form .field.full { grid-column: 1 / -1; }
+			.brainstorm-form label { margin: 0; font-size: 0.8rem; color: #AAAAAA; }
+			.brainstorm-form .submit-btn { grid-column: 1 / -1; margin-top: 0.4rem; }
+			.contact-drawer .form-note { text-align: center; font-size: 0.82rem; color: #AAAAAA; margin: 1.2rem 0 0; }
+			.contact-close:focus-visible, .contact-drawer .submit-btn:focus-visible { outline: 2px solid #EAEAEA; outline-offset: 2px; }
+			@media (max-width: 900px) {
+				.contact-scroll { padding: 2.4rem 1rem calc(1.4rem + env(safe-area-inset-bottom, 0px)); }
+			}
+			@media (max-width: 600px) {
+				.brainstorm-form { grid-template-columns: 1fr; padding: 1.2rem; }
+				.hero-contact { flex-direction: column; gap: 0.7em; }
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.contact-drawer, .contact-backdrop { transition-duration: 0.01s; }
 			}
 
 			/* Efeito "marquee vertical" nas imagens da seção Layouts Produzidos */
@@ -353,12 +446,8 @@
 					<nav>
 						<ul>
 							<li><a href="#intro">Início</a></li>
-							<li><a href="#perfil">Perfil</a></li>
 							<li><a href="#sites-trabalhados">Trabalho</a></li>
 							<li><a href="#layouts-produzidos">Layouts</a></li>
-							<li><a href="#experiencia">Experiência</a></li>
-							<li><a href="#habilidades">Habilidades</a></li>
-							<li><a href="#contato">Contato</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -374,7 +463,20 @@
 							<h1>Erick Prestes</h1>
 							<p>Desenvolvedor Web Pleno com 6 anos de experiência em tecnologia, especializado em ecossistemas WordPress, WooCommerce e Elementor.</p>
 							<ul class="actions">
-								<li><a href="#perfil" class="button scrolly">Ver currículo</a></li>
+								<li><a href="J-Erick-Prestes-2026-v5.pdf" class="button" target="_blank" rel="noopener">Ver currículo</a></li>
+								<li><a href="#contactDrawer" class="button" data-open-contact aria-haspopup="dialog" aria-controls="contactDrawer">Entre em contato</a></li>
+							</ul>
+
+							<!-- Contato (mesclado na hero) -->
+							<ul class="hero-contact" aria-label="Informações de contato">
+								<li><i class="fas fa-map-marker-alt" aria-hidden="true"></i><span>Taubaté, SP &middot; Brasil</span></li>
+								<li><i class="fas fa-envelope" aria-hidden="true"></i><a href="mailto:jerickprestes@gmail.com">jerickprestes@gmail.com</a></li>
+								<li><i class="fas fa-phone" aria-hidden="true"></i><a href="tel:+5512981452330">(12) 9 8145-2330</a></li>
+							</ul>
+							<ul class="icons hero-social">
+								<li><a href="https://www.linkedin.com/in/jerickprestes/" class="icon brands fa-linkedin-in" target="_blank" rel="noopener"><span class="label">LinkedIn</span></a></li>
+								<li><a href="https://github.com/jerickprestes/" class="icon brands fa-github" target="_blank" rel="noopener"><span class="label">GitHub</span></a></li>
+								<li><a href="#contactDrawer" class="icon brands fa-whatsapp" data-open-contact aria-haspopup="dialog" aria-controls="contactDrawer"><span class="label">WhatsApp</span></a></li>
 							</ul>
 
 								<!-- Marquee de tecnologias -->
@@ -400,16 +502,6 @@
 									<span class="tech-pill" aria-hidden="true">Cloud</span>
 								</div>
 							</div>
-						</div>
-					</section>
-
-				<!-- Perfil -->
-					<section id="perfil" class="wrapper style2 fade-up" aria-label="Perfil profissional">
-						<div class="inner">
-							<h2>Perfil</h2>
-							<p>Com 6 anos de experiência na área de tecnologia, especializado em ecossistemas WordPress, WooCommerce e Elementor.<br /><br />
-								<strong>Atuação sólida no ciclo completo de projetos web:</strong> da concepção do layout à infraestrutura de servidores e otimização de alta performance. Histórico comprovado em liderança técnica, gestão de projetos e integração de sistemas complexos de e-commerce.</p>
-							<p>Desenvolvedor autodidata com forte atuação prática e contínua evolução técnica em arquitetura web, e-commerce, estruturação de landing pages de alta performance e administração de servidores Linux.</p>
 						</div>
 					</section>
 
@@ -751,7 +843,9 @@
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Design moderno focado em conversão e UX</p>
 											</div>
 											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/clube-lma.jpg" data-title="Clube de Negócios LMA" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Clube de Negócios LMA"></a>
+											<span class="layout-zoom-icon" aria-hidden="true"><i class="fas fa-search-plus"></i></span>
 										</div>
+										<div class="layout-project-action"><a href="https://github.com/jerickprestes/" class="button small" target="_blank" rel="noopener" aria-label="Acessar projeto Clube de Negócios LMA no GitHub">Acessar projeto</a></div>
 									</div>
 
 									<!-- Layout 2: Fillos -->
@@ -763,7 +857,9 @@
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Layout institucional clean e responsivo</p>
 											</div>
 											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/fillos.jpg" data-title="Fillos" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Fillos"></a>
+											<span class="layout-zoom-icon" aria-hidden="true"><i class="fas fa-search-plus"></i></span>
 										</div>
+										<div class="layout-project-action"><a href="https://github.com/jerickprestes/" class="button small" target="_blank" rel="noopener" aria-label="Acessar projeto Fillos no GitHub">Acessar projeto</a></div>
 									</div>
 
 									<!-- Layout 3: Mayra Hall -->
@@ -775,7 +871,9 @@
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Interface para análise de dados e métricas</p>
 											</div>
 											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/mayra-hall.jpg" data-title="Mayra Hall" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Mayra Hall"></a>
+											<span class="layout-zoom-icon" aria-hidden="true"><i class="fas fa-search-plus"></i></span>
 										</div>
+										<div class="layout-project-action"><a href="https://github.com/jerickprestes/" class="button small" target="_blank" rel="noopener" aria-label="Acessar projeto Mayra Hall no GitHub">Acessar projeto</a></div>
 									</div>
 
 									<!-- Layout 4: Jornada Literária 2025 -->
@@ -787,7 +885,9 @@
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Página de captura otimizada para alta conversão</p>
 											</div>
 											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/jornada-literaria-2025.jpg" data-title="Jornada Literária 2025" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Jornada Literária 2025"></a>
+											<span class="layout-zoom-icon" aria-hidden="true"><i class="fas fa-search-plus"></i></span>
 										</div>
+										<div class="layout-project-action"><a href="https://github.com/jerickprestes/" class="button small" target="_blank" rel="noopener" aria-label="Acessar projeto Jornada Literária 2025 no GitHub">Acessar projeto</a></div>
 									</div>
 
 									<!-- Layout 5: SP Leituras 2025 -->
@@ -799,7 +899,9 @@
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Interface EAD intuitiva para alunos</p>
 											</div>
 											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/sp-leituras-2025.jpg" data-title="SP Leituras 2025" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout SP Leituras 2025"></a>
+											<span class="layout-zoom-icon" aria-hidden="true"><i class="fas fa-search-plus"></i></span>
 										</div>
+										<div class="layout-project-action"><a href="https://github.com/jerickprestes/" class="button small" target="_blank" rel="noopener" aria-label="Acessar projeto SP Leituras 2025 no GitHub">Acessar projeto</a></div>
 									</div>
 
 									<!-- Layout 6: Cookies da Kels -->
@@ -811,7 +913,9 @@
 												<p style="color:#888888; margin:0.5em 0 0; font-size:0.9em;">Design Mobile-First para delivery</p>
 											</div>
 											<a href="#" class="layout-preview-trigger" data-src="images/screenshots/cookies-da-kels.jpg" data-title="Cookies da Kel" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:2; border:0;" aria-label="Ver preview do layout Cookies da Kel"></a>
+											<span class="layout-zoom-icon" aria-hidden="true"><i class="fas fa-search-plus"></i></span>
 										</div>
+										<div class="layout-project-action"><a href="https://github.com/jerickprestes/" class="button small" target="_blank" rel="noopener" aria-label="Acessar projeto Cookies da Kel no GitHub">Acessar projeto</a></div>
 									</div>
 
 								</div>
@@ -820,138 +924,6 @@
 								<div class="swiper-pagination"></div>
 								<div class="swiper-button-prev" role="button" aria-label="Anterior"><i class="fas fa-chevron-left"></i></div>
 								<div class="swiper-button-next" role="button" aria-label="Próximo"><i class="fas fa-chevron-right"></i></div>
-							</div>
-						</div>
-					</section>
-
-				<!-- Experiência -->
-					<section id="experiencia" class="wrapper style3 spotlights">
-						<section>
-							<a href="#" class="image" style="position: relative; display: block;">
-								<img src="https://images.pexels.com/photos/8112165/pexels-photo-8112165.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Reunião de validação técnica com clientes" data-position="center center" />
-								<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); pointer-events: none; z-index: 1;"></div>
-								<i class="fas fa-user-check" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5em; color: #EAEAEA; text-shadow: 0 2px 10px rgba(0,0,0,0.7); pointer-events: none; z-index: 2;"></i>
-							</a>
-							<div class="content">
-								<div class="inner">
-									<h2>Validação e Alinhamento Técnico com Clientes</h2>
-									<p>Responsável pela validação de projetos web diretamente com clientes, garantindo alinhamento técnico, qualidade de entrega e cumprimento de escopo.</p>
-								</div>
-							</div>
-						</section>
-						<section>
-							<a href="#" class="image" style="position: relative; display: block;">
-								<img src="https://images.pexels.com/photos/6804077/pexels-photo-6804077.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Planejamento estratégico de projetos com quadro de tarefas" data-position="top center" />
-								<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); pointer-events: none; z-index: 1;"></div>
-								<i class="fas fa-tasks" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5em; color: #EAEAEA; text-shadow: 0 2px 10px rgba(0,0,0,0.7); pointer-events: none; z-index: 2;"></i>
-							</a>
-							<div class="content">
-								<div class="inner">
-									<h2>Planejamento e Gestão Estratégica de Projetos</h2>
-									<p>Atuação focada na análise, planejamento e gestão estratégica de projetos web, otimizando fluxos de trabalho e alocação de recursos técnicos.</p>
-								</div>
-							</div>
-						</section>
-						<section>
-							<a href="#" class="image" style="position: relative; display: block;">
-								<img src="https://images.pexels.com/photos/5125366/pexels-photo-5125366.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Código de programação colorido em tela para desenvolvimento web" data-position="25% 25%" />
-								<div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); pointer-events: none; z-index: 1;"></div>
-								<i class="fas fa-laptop-code" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5em; color: #EAEAEA; text-shadow: 0 2px 10px rgba(0,0,0,0.7); pointer-events: none; z-index: 2;"></i>
-							</a>
-							<div class="content">
-								<div class="inner">
-									<h2>Desenvolvimento Web e E-commerce</h2>
-									<p>Responsável pela elaboração e produção de layouts focados em conversão para landing pages e websites institucionais, além da criação e personalização avançada de e-commerces com PHP/JS.</p>
-								</div>
-							</div>
-						</section>
-					</section>
-
-				<!-- Habilidades -->
-					<section id="habilidades" class="wrapper style1 fade-up" aria-label="Habilidades e competências">
-						<div class="inner">
-							<h2>Habilidades e Competências Técnicas</h2>
-							<p>Stack completa para o ciclo de projetos web, do front-end à infraestrutura, com automação e integrações de e-commerce.</p>
-							<div class="features">
-								<section>
-									<span class="icon solid major fa-code"></span>
-									<h3>Linguagens e Tecnologias</h3>
-									<p>HTML5, CSS3, JavaScript (JS), PHP e SQL (MySQL).</p>
-								</section>
-								<section>
-									<span class="icon solid major fa-shopping-cart"></span>
-									<h3>CMS &amp; E-commerce</h3>
-									<p>WordPress, WooCommerce, Elementor e WPCode Snippets.</p>
-								</section>
-								<section>
-									<span class="icon solid major fa-bullseye"></span>
-									<h3>Landing Pages &amp; CRO</h3>
-									<p>Páginas de alta conversão, testes de performance, otimização de velocidade de carregamento, responsividade (Mobile-First) e layouts focados em captação de leads.</p>
-								</section>
-								<section>
-									<span class="icon solid major fa-server"></span>
-									<h3>Banco de Dados &amp; Infraestrutura</h3>
-									<p>MySQL, servidores Linux (VPS) e Docker.</p>
-								</section>
-								<section>
-									<span class="icon solid major fa-robot"></span>
-									<h3>Ferramentas e Automação</h3>
-									<p>Git, integração de APIs, automação com IA (geração de códigos, filtros PHP, scripts de banco de dados) e otimização de fluxos com RD Station e Mautic.</p>
-								</section>
-								<section>
-									<span class="icon major fa-gem"></span>
-									<h3>Principais Entregas</h3>
-									<p>Master blueprints WordPress, integração com ERPs (Olist) e IA aplicada à geração de código e automação de marketing.</p>
-								</section>
-							</div>
-
-							<h3>Principais Entregas e Desafios</h3>
-							<ul class="alt desafios-list">
-								<li><i class="fas fa-code"></i>Criação e personalização avançada de e-commerces utilizando snippets e customizações em PHP/JS, com forte aplicação de HTML e CSS estruturados.</li>
-								<li><i class="fas fa-tachometer-alt"></i>Otimização de velocidade de carregamento e performance em ambientes com alto volume de dados, seguindo boas práticas de SEO técnico em landing pages.</li>
-								<li><i class="fas fa-server"></i>Desenvolvimento e integração de master blueprints para WordPress, unificando padrões de segurança e automação em servidores VPS.</li>
-								<li><i class="fas fa-boxes"></i>Integração de plataformas de e-commerce com sistemas ERP (como Olist) para gerenciamento automatizado de estoque, regras de frete e mapeamento de dados fiscais.</li>
-								<li><i class="fas fa-robot"></i>Geração e refinamento de código assistido por IA: filtros complexos em PHP, consultas e scripts SQL/MySQL e trechos customizados para WPCode Snippets.</li>
-								<li><i class="fas fa-bullhorn"></i>Automação e otimização de marketing com estratégias baseadas em dados para campanhas, captura de leads e integração de ferramentas como RD Station e Mautic.</li>
-								<li><i class="fas fa-lock"></i>Suporte técnico automatizado para configuração de containers Docker, ajustes de segurança em servidores Linux e otimização de ambientes de auto-hospedagem.</li>
-							</ul>
-
-							<ul class="actions">
-								<li><a href="#contato" class="button">Entrar em contato</a></li>
-							</ul>
-						</div>
-					</section>
-
-				<!-- Contato -->
-					<section id="contato" class="wrapper style2 fade-up" aria-label="Entre em contato">
-						<div class="inner">
-							<h2>Entre em contato</h2>
-							<div class="split style1">
-								<section>
-									<ul class="contact">
-										<li>
-											<h3>Endereço</h3>
-											<span>Taubaté, SP<br />
-											Brasil</span>
-										</li>
-										<li>
-											<h3>E-mail</h3>
-											<a href="mailto:jerickprestes@gmail.com">jerickprestes@gmail.com</a>
-										</li>
-										<li>
-											<h3>Telefone</h3>
-											<span>(12) 9 8145-2330</span>
-										</li>
-										<li>
-											<h3>Redes</h3>
-											<ul class="icons">
-												<li><a href="https://www.linkedin.com/in/jerickprestes/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-												<li><a href="https://github.com/jerickprestes/" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-												<li><a href="https://www.google.com/search?q=https://wa.me/5512981452330" class="icon brands fa-whatsapp"><span class="label">WhatsApp</span></a></li>
-											</ul>
-										</li>
-									</ul>
-								</section>
 							</div>
 						</div>
 					</section>
@@ -966,6 +938,60 @@
 					</ul>
 				</div>
 			</footer>
+
+		<!-- Formulário de contato off-canvas (envia para o WhatsApp) -->
+			<div class="contact-backdrop" id="contactBackdrop"></div>
+			<aside class="contact-drawer" id="contactDrawer" role="dialog" aria-modal="true" aria-labelledby="contactTitle" aria-hidden="true" tabindex="-1">
+				<button type="button" class="contact-close" id="contactClose" aria-label="Fechar formulário">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+				</button>
+				<div class="contact-scroll">
+					<div class="form-wrap">
+						<div class="form-head">
+							<h2 id="contactTitle">Entre em contato</h2>
+							<p>Conte um pouco sobre o seu projeto. Sem compromisso, é só o primeiro passo de uma conversa.</p>
+						</div>
+						<form class="brainstorm-form" id="brainstormForm">
+							<div class="field">
+								<label for="cf-nome">Nome</label>
+								<input type="text" id="cf-nome" name="nome" placeholder="Seu nome completo" required />
+							</div>
+							<div class="field">
+								<label for="cf-email">E-mail</label>
+								<input type="email" id="cf-email" name="email" placeholder="seu@email.com" required />
+							</div>
+							<div class="field">
+								<label for="cf-telefone">Telefone / WhatsApp</label>
+								<input type="tel" id="cf-telefone" name="telefone" placeholder="(00) 00000-0000" required />
+							</div>
+							<div class="field">
+								<label for="cf-tipo">Tipo de projeto</label>
+								<select id="cf-tipo" name="tipo">
+									<option>Site institucional</option>
+									<option>Landing page</option>
+									<option>E-commerce (WooCommerce)</option>
+									<option>Design gráfico / social media</option>
+									<option>Outro</option>
+								</select>
+							</div>
+							<div class="field full">
+								<label for="cf-prazo">Prazo desejado</label>
+								<select id="cf-prazo" name="prazo">
+									<option>Urgente (até 15 dias)</option>
+									<option>Até 1 mês</option>
+									<option>Sem pressa / ainda planejando</option>
+								</select>
+							</div>
+							<div class="field full">
+								<label for="cf-mensagem">Conte um pouco do que você precisa</label>
+								<textarea id="cf-mensagem" name="mensagem" rows="3" placeholder="Descreva brevemente seu projeto..."></textarea>
+							</div>
+							<button type="submit" class="button primary submit-btn">Enviar e começar a conversa</button>
+						</form>
+						<p class="form-note">Ao enviar, a conversa abre no WhatsApp com os dados já preenchidos.</p>
+					</div>
+				</div>
+			</aside>
 
 		<!-- Preview customizado dos Layouts Produzidos (estilo Figma) -->
 			<div class="layout-preview-overlay" id="layoutPreviewOverlay" aria-hidden="true">
@@ -1102,6 +1128,75 @@
 						}
 					});
 				});
+			</script>
+
+			<!-- Formulário de contato: painel off-canvas + envio para o WhatsApp -->
+			<script>
+				(function () {
+					var drawer = document.getElementById('contactDrawer');
+					var backdrop = document.getElementById('contactBackdrop');
+					var closeBtn = document.getElementById('contactClose');
+					var form = document.getElementById('brainstormForm');
+					if (!drawer || !backdrop) return;
+					var lastTrigger = null;
+					var whatsappNumber = '5512981452330';
+
+					function isOpen() { return drawer.classList.contains('is-open'); }
+					function openContact(trigger) {
+						if (isOpen()) return;
+						lastTrigger = trigger || document.activeElement;
+						drawer.classList.add('is-open');
+						backdrop.classList.add('is-open');
+						drawer.setAttribute('aria-hidden', 'false');
+						document.body.style.overflow = 'hidden';
+						drawer.querySelector('.contact-scroll').scrollTop = 0;
+						drawer.focus({ preventScroll: true });
+					}
+					function closeContact() {
+						if (!isOpen()) return;
+						drawer.classList.remove('is-open');
+						backdrop.classList.remove('is-open');
+						drawer.setAttribute('aria-hidden', 'true');
+						document.body.style.overflow = '';
+						if (lastTrigger && lastTrigger.focus) lastTrigger.focus({ preventScroll: true });
+						lastTrigger = null;
+					}
+
+					document.querySelectorAll('[data-open-contact]').forEach(function (el) {
+						el.addEventListener('click', function (e) { e.preventDefault(); openContact(el); });
+					});
+					closeBtn.addEventListener('click', closeContact);
+					backdrop.addEventListener('click', closeContact);
+
+					document.addEventListener('keydown', function (e) {
+						if (!isOpen()) return;
+						if (e.key === 'Escape') { closeContact(); return; }
+						if (e.key !== 'Tab') return;
+						var f = drawer.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), a[href]');
+						if (!f.length) return;
+						var first = f[0], last = f[f.length - 1];
+						if (e.shiftKey && (document.activeElement === first || document.activeElement === drawer)) { e.preventDefault(); last.focus(); }
+						else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+					});
+
+					form.addEventListener('submit', function (e) {
+						e.preventDefault();
+						var linhas = [
+							'Olá! Vim pelo seu portfólio e gostaria de conversar sobre um projeto.',
+							'',
+							'Nome: ' + form.nome.value.trim(),
+							'E-mail: ' + form.email.value.trim(),
+							'Telefone: ' + form.telefone.value.trim(),
+							'Tipo de projeto: ' + form.tipo.value,
+							'Prazo: ' + form.prazo.value
+						];
+						var msg = form.mensagem.value.trim();
+						if (msg) { linhas.push(''); linhas.push('Mensagem: ' + msg); }
+						var url = 'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(linhas.join('\n'));
+						window.open(url, '_blank', 'noopener');
+						closeContact();
+					});
+				})();
 			</script>
 
 	</body>
