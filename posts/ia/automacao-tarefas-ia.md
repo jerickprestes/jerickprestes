@@ -2,35 +2,31 @@
 title: Automatizando tarefas repetitivas com IA
 date: 2026-10-12
 tags: Automação, Agentes
-summary: Do roteiro manual ao fluxo automatizado: o que vale e o que não vale delegar.
+summary: Como um fluxo com Python e IA reduziu em cerca de 30% o tempo de entrega de peças em vários formatos.
 cover: 
-draft: true
 ---
 
-> RASCUNHO DE EXEMPLO. Apague esta linha e troque o texto abaixo pelo seu. Para o post sair sem a etiqueta "RASCUNHO", remova `draft: true` do topo do arquivo.
+Quando uma equipe de criação entrega 15 projetos ao mesmo tempo, boa parte do tempo vai para o trabalho que se repete: adaptar a mesma peça para vários formatos, trocar textos, exportar, nomear arquivos. É o tipo de tarefa em que a automação paga o investimento rápido.
 
-## O problema
+### Onde estava o tempo
 
-Descreva em 2 ou 3 frases o cenário: o que estava acontecendo, para quem e por que isso incomodava.
+Cada campanha vira várias peças: feed (1:1), stories e reels (9:16), vertical (4:5), horizontal (16:9). O trabalho criativo é um só, mas a adaptação é feita peça a peça.
 
-## A solução
+### O fluxo
 
-Explique o caminho que você escolheu e **por que** escolheu esse. Use listas quando fizer sentido:
+Montei um fluxo de produção com **IA e automação**, usando **Python** e **Adobe Firefly**:
 
-- primeiro passo
-- segundo passo
-- terceiro passo
+- **Python** cuida do que é mecânico: gerar as peças em lote e adaptá-las aos formatos (1:1, 4:5, 16:9), mantendo a identidade de cada marca.
+- **Firefly** entra onde a IA ajuda na criação: fundos, cenários e recriação de iluminação para fotos de produto.
+- **O processo ao redor** importa tanto quanto as ferramentas: briefing, revisão e aprovação organizados em um gerenciador de projetos (primeiro Monday, depois ClickUp).
 
-Para mostrar código, use um bloco com três crases:
+### Resultado
 
-```php
-add_action('init', function () {
-    // seu código aqui
-});
-```
+O fluxo reduziu em **cerca de 30% o tempo de entrega** de peças em múltiplos formatos, e a equipe de 6 pessoas passou a gastar esse tempo no que exige olhar humano.
 
-## Resultado
+### O que aprendi
 
-O que mudou depois da solução: tempo ganho, erro que parou de acontecer, número que melhorou.
-
-Quer ver mais? Veja os [outros projetos](#grafico) ou [fale comigo](#contato).
+1. **Automatize o que se repete, não o que exige critério.** Escolha de composição e aprovação continuam humanas.
+2. **Valide tudo que a IA entrega.** Texto deformado, mão estranha, cor fora da marca: alguém precisa checar, e o processo deve prever esse passo.
+3. **Comece pequeno.** Um script que resolve um gargalo vale mais do que um sistema grande que ninguém usa.
+4. **Processo antes de ferramenta.** Sem briefing e aprovação claros, automatizar só acelera o retrabalho.
