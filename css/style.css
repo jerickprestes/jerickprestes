@@ -298,3 +298,54 @@ img,svg{display:block}
   .xs-n{font-size:calc(34*var(--u));line-height:calc(34*var(--u))}
   .xs-l{left:calc(12*var(--u));bottom:calc(12*var(--u));font-size:calc(8*var(--u));line-height:calc(10*var(--u))}
 }
+
+/* ---------- capas do Behance nos tiles do mosaico ---------- */
+.tile{overflow:hidden;isolation:isolate}
+.tile .t-img{left:0;top:0;width:100%;height:100%;object-fit:cover;opacity:.2;filter:grayscale(1);transition:opacity .45s ease,filter .45s ease,transform .6s ease;pointer-events:none}
+.tile .t-sh{position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,0) 38%,rgba(0,0,0,0) 58%,rgba(0,0,0,.68));opacity:0;transition:opacity .45s ease;pointer-events:none}
+.tile .t-l,.tile .t-n,.tile .t-a,.tile .t-ti{z-index:2;transition:transform .25s ease,color .3s ease,opacity .3s ease}
+.tile .t-ti{left:calc(9*var(--u));bottom:calc(22*var(--u));width:calc(100% - 18*var(--u));font-size:calc(6.4*var(--u));line-height:calc(7.8*var(--u));white-space:normal;color:#fff;opacity:0;transform:translateY(calc(4*var(--u)))}
+.tile:not(:has(.t-img)) .t-sh,.tile:not(:has(.t-img)) .t-ti{display:none}
+.tile:hover .t-img{opacity:1;filter:none;transform:scale(1.04)}
+.tile:hover .t-sh{opacity:1}
+.tile:hover .t-l,.tile:hover .t-n,.tile:hover .t-a{color:#fff}
+.tile:hover .t-ti{opacity:1;transform:none}
+@media (max-width:820px){.tile .t-ti{font-size:calc(8*var(--u));line-height:calc(10*var(--u));bottom:calc(24*var(--u))}}
+
+/* ---------- lightbox (galeria do projeto) ---------- */
+.lb{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s}
+.lb.on{opacity:1;visibility:visible}
+.lb-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(14px,3vw,36px);border-bottom:1px solid var(--soft);flex:none}
+.lb-id{min-width:0}
+.lb-num{display:block;font-size:11px;letter-spacing:.06em;color:#555;margin-bottom:4px}
+.lb-title{font-size:clamp(17px,2.3vw,30px);line-height:1.05;letter-spacing:-.02em;text-transform:uppercase;color:var(--ink);font-weight:800}
+.lb-act{display:flex;align-items:center;gap:8px;flex:none}
+.lb-be{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 14px 0 8px;background:var(--ink);color:#fff;font-size:11px;letter-spacing:.06em;white-space:nowrap;transition:background .2s}
+.lb-be:hover{background:var(--red)}
+.lb-bl{display:grid;place-items:center;width:26px;height:24px;border-radius:3px;background:#1769FF;color:#fff;font:800 12px/1 var(--sans);letter-spacing:-.02em}
+.lb-nav,.lb-x{width:40px;height:40px;border:1px solid var(--ink);background:transparent;color:var(--ink);font-size:16px;cursor:pointer;transition:background .2s,color .2s}
+.lb-nav:hover,.lb-x:hover{background:var(--ink);color:#fff}
+.lb-be:focus-visible,.lb-nav:focus-visible,.lb-x:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.lb-body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:clamp(12px,2.5vw,32px) clamp(14px,3vw,36px) 48px}
+.lb-grid{display:flex;align-items:flex-start;gap:12px;max-width:1500px;margin:0 auto}
+.lb-grid.n1{max-width:760px}.lb-grid.n2{max-width:1040px}
+.lb-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:12px}
+.lb-grid img{width:100%;height:auto;display:block;background:#E9E5DB;opacity:0;transition:opacity .4s ease;-webkit-user-drag:none}
+.lb-grid img.ok{opacity:1}
+@media (max-width:560px){
+  .lb-bar{flex-wrap:wrap;padding:10px 14px}
+  .lb-id{flex:1 1 100%}
+  .lb-act{flex:1 1 100%}
+  .lb-be{flex:1;justify-content:center}
+  .lb-grid,.lb-col{gap:8px}
+}
+
+.lb-empty{max-width:560px;overflow-wrap:anywhere;margin:40px auto;padding:20px 22px;border:1px solid var(--ink);font-size:12px;line-height:1.7;color:var(--ink)}
+.lb-grid:has(.lb-empty){display:block}
+
+/* ---------- navbar fixa (desktop) ---------- */
+@media (min-width:821px){
+  .hd{position:fixed;top:0;left:0;right:0;width:auto;background:var(--bg)}
+  .top{padding-top:calc(38*var(--u))}                      /* ocupa o lugar que o header ocupava no fluxo */
+  html{scroll-padding-top:calc(38*min(1rem, 100svh/569.5))} /* âncoras (#web, #grafico…) param abaixo da barra */
+}

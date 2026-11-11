@@ -118,4 +118,72 @@
     var H = initCar(hc, ht);
     hc.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.hs-n'); if (b) H.next(); });
   }
+
+  // ---------- lightbox dos projetos (mosaico "Projetos gráficos") ----------
+  var dataEl = document.getElementById('bhData'), lb = document.getElementById('lb');
+  if (dataEl && lb) {
+    var P = JSON.parse(dataEl.textContent), cur = -1, lastFocus = null;
+    var lbGrid = document.getElementById('lbGrid'), lbBody = document.getElementById('lbBody'), lbTitle = document.getElementById('lbTitle'),
+        lbNum = document.getElementById('lbNum'), lbBe = document.getElementById('lbBe'), lbPrev = document.getElementById('lbPrev'),
+        lbNext = document.getElementById('lbNext'), lbClose = document.getElementById('lbClose');
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    var mqW = window.matchMedia('(min-width:1101px)'), mqM = window.matchMedia('(max-width:560px)');
+    function colCount(n) { return Math.min(n, mqM.matches ? 2 : (mqW.matches ? 3 : 2)); }
+    function fill() {
+      var p = P[cur], k = colCount(p.i.length), cols = [], h = [], i;
+      lbGrid.innerHTML = ''; lbGrid.className = 'lb-grid' + (p.i.length === 1 ? ' n1' : p.i.length === 2 ? ' n2' : ''); lbGrid.setAttribute('data-k', k);
+      for (i = 0; i < k; i++) { var c = document.createElement('div'); c.className = 'lb-col'; lbGrid.appendChild(c); cols.push(c); h.push(0); }
+      var pend = p.i.length, bad = 0;
+      function chk() {
+        if (--pend || bad !== p.i.length) return;
+        var m = document.createElement('p'); m.className = 'lb-empty mono';
+        m.innerHTML = 'As imagens deste projeto não foram encontradas em <b>img/behance/' + p.id + '/</b>.<br>Rode <b>python3 baixar-capas-behance.py</b> na pasta do site (uma vez) e recarregue a página.';
+        lbGrid.appendChild(m); if (window.console) console.warn('[lightbox] arquivos ausentes: ' + p.i[0][0]);
+      }
+      p.i.forEach(function (im) {      // masonry: cada imagem vai para a coluna mais baixa (mantém a ordem de leitura)
+        var m = h.indexOf(Math.min.apply(null, h)), el = new Image();
+        el.alt = p.t; el.draggable = false; el.decoding = 'async'; el.loading = 'lazy';
+        el.style.aspectRatio = '100 / ' + im[1];
+        el.onload = function () { el.classList.add('ok'); chk(); }; el.onerror = function () { el.remove(); bad++; chk(); };
+        el.src = im[0]; cols[m].appendChild(el); h[m] += im[1] + 3;
+      });
+    }
+    function render(i) {
+      cur = (i + P.length) % P.length; var p = P[cur];
+      lbTitle.textContent = p.t; lbNum.textContent = 'PROJETO ' + pad(cur + 1) + ' / ' + P.length; lbBe.href = p.u;
+      fill(); lbBody.scrollTop = 0;
+    }
+    window.addEventListener('resize', function () {
+      if (lb.classList.contains('on') && +lbGrid.getAttribute('data-k') !== colCount(P[cur].i.length)) { var s = lbBody.scrollTop; fill(); lbBody.scrollTop = s; }
+    });
+    function openLb(i) {
+      lastFocus = document.activeElement; render(i);
+      lb.classList.add('on'); lb.setAttribute('aria-hidden', 'false'); document.documentElement.style.overflow = 'hidden';
+      lbClose.focus();
+    }
+    function closeLb() {
+      lb.classList.remove('on'); lb.setAttribute('aria-hidden', 'true'); document.documentElement.style.overflow = '';
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('.tile[data-i]');
+      if (!a || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault(); openLb(+a.getAttribute('data-i'));
+    });
+    lbClose.addEventListener('click', closeLb);
+    lbPrev.addEventListener('click', function () { render(cur - 1); });
+    lbNext.addEventListener('click', function () { render(cur + 1); });
+    lbBody.addEventListener('click', function (e) { if (e.target === lbBody) closeLb(); });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('on')) return;
+      if (e.key === 'Escape') closeLb();
+      else if (e.key === 'ArrowLeft') render(cur - 1);
+      else if (e.key === 'ArrowRight') render(cur + 1);
+      else if (e.key === 'Tab') {
+        var f = [lbBe, lbPrev, lbNext, lbClose], i = f.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+  }
 })();

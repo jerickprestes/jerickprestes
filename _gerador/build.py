@@ -356,12 +356,66 @@ def web_sections():
     band.T((627, 38.4), (230, 80.75), 'J. ERICK PRESTES<br>© 2026', 'mono', fs=(6.8, 8), lh=(8.2, 10.5), style='color:#F2F2F2')
     return [s.html(), s2.html(), s3.html(), band.html()]
 
+
+# ---- mosaico em linhas "justificadas": capas são horizontais (~808x632), então cada linha ocupa a largura toda
+def rows_layout(rows, W, x0, y0, gap):
+    out, y = [], y0
+    for fr, ratio in rows:
+        avail = W - gap * (len(fr) - 1)
+        ws = [avail * f for f in fr]
+        h = round(sum(ws) / len(ws) / ratio)
+        x = x0
+        for w in ws:
+            out.append((round(x, 1), y, round(w, 1), h)); x += w + gap
+        y += h + gap
+    return out, y - gap
+
+DROWS = [([.4, .3, .3], 1.3), ([.3, .2, .2, .3], 1.3), ([.2, .3, .3, .2], 1.3), ([.25, .25, .25, .25], 1.3), ([.3, .2, .3, .2], 1.3)]
+MROWS = [([1], 1.5), ([.55, .45], 1.3), ([.45, .55], 1.3)] * 3 + [([1], 1.5), ([.55, .45], 1.3), ([1], 1.5)]
+
+LB_HTML = '''<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lbTitle" aria-hidden="true">
+<div class="lb-bar">
+<div class="lb-id"><span class="mono lb-num" id="lbNum"></span><h3 class="xb lb-title" id="lbTitle"></h3></div>
+<div class="lb-act">
+<a class="lb-be mono" id="lbBe" href="#" target="_blank" rel="noopener"><span class="lb-bl" aria-hidden="true">Bē</span>VER NO BEHANCE<span aria-hidden="true">↗</span></a>
+<button class="lb-nav" id="lbPrev" type="button" aria-label="Projeto anterior">←</button>
+<button class="lb-nav" id="lbNext" type="button" aria-label="Próximo projeto">→</button>
+<button class="lb-x" id="lbClose" type="button" aria-label="Fechar">✕</button>
+</div></div>
+<div class="lb-body" id="lbBody"><div class="lb-grid" id="lbGrid"></div></div>
+</div>'''
+
+# branco e preto saem do mosaico: viram outra cor do projeto, sem repetir a de tiles vizinhos
+PAL = ['#F72B10', '#0373DF', '#F1C608', '#F2FB48']
+def recolor(L, cols):
+    out = []
+    for i, (n_, x, y, w, h) in enumerate(L):
+        c = cols[i]
+        if c not in PAL:
+            viz = [out[j] for j in range(i) if not (L[j][1] > x + w + 8 or L[j][1] + L[j][3] < x - 8 or L[j][2] > y + h + 8 or L[j][2] + L[j][4] < y - 8)]
+            c = next((p for p in PAL[i % 4:] + PAL[:i % 4] if p not in viz), PAL[i % 4])
+        out.append(c)
+    return out
+
+def txt_on(hexc):
+    r, g, b_ = (int(hexc[i:i + 2], 16) / 255 for i in (1, 3, 5))
+    lin = lambda c: c / 12.92 if c <= .03928 else ((c + .055) / 1.055) ** 2.4
+    return '#111' if .2126 * lin(r) + .7152 * lin(g) + .0722 * lin(b_) > .3 else '#fff'
+
+def lb_data():
+    BH = json.load(open('/home/claude/site/data/behance.json', encoding='utf-8'))
+    d = [{'id': p['id'], 't': p['title'], 'u': p['url'], 'i': [[im['file'], im['r']] for im in p['images']]} for p in BH['projects']]
+    return '<script type="application/json" id="bhData">' + json.dumps(d, ensure_ascii=False).replace('<', '\\u003c') + '</script>'
+
 # ============================================================ GRÁFICO
 def grafico_sections():
     T = json.load(open('/home/claude/site/tiles.json'))
+    BH = json.load(open('/home/claude/site/data/behance.json', encoding='utf-8'))
     dt, mt = T['513'], T['868']
-    dbot = max(y + h for _, _, y, h, _ in dt) + 4
-    mbot = max(y + h for _, _, y, h, _ in mt) + 4
+    DL, dbot = rows_layout(DROWS, 686, 36, 470, 4)
+    ML, mbot = rows_layout(MROWS, 342, 24, 600, 4)
+    DL = [(i + 1,) + t for i, t in enumerate(DL)]; ML = [(i + 1,) + t for i, t in enumerate(ML)]
+    dbot += 4; mbot += 4
     s = Sec(H=int(dbot + 90), mH=int(mbot + 120), attrs='id="grafico"')
     RULE(s, 8)
     MK(s, '001', 19.5, 18.6); RL(s, 20.1, 34, 266)
@@ -383,15 +437,20 @@ def grafico_sections():
     s.R((100, 449.05, 606, .9), (70, 534.55, 296, .9), '#444')
     s.E('div', (699, 445.5, 8, 8), (359, 531, 8, 8), '<svg viewBox="0 0 8 8" fill="none" stroke="#444" stroke-width=".9"><path d="M0 0.2L7 4L0 7.8"/></svg>', '')
     RULE(s, 460, '#B5B2AA', my=570)
-    cw_d, cw_m = 168.5, 169
-    for (n_, x, y, h, col), (_, mx_, my_, mh_, mcol) in zip(dt, mt):
-        dark = col == '#0B0B0B'
-        tc = '#fff' if dark else '#111'
-        mtc = '#fff' if mcol == '#0B0B0B' else '#111'
-        st = f'background:{col};' + ('border:.6rem solid #111;' if col == '#FFFFFF' else '') + f'--tc:{tc};--mtc:{mtc};--mbg:{mcol};' + ('--msh:inset 0 0 0 .6px #111;' if mcol == '#FFFFFF' else '')
-        inner = (f'<span class="mono t-l">PROJETO</span><span class="disp t-n">{n_:02d}</span><span class="t-a">→</span>')
-        s.raw(f'<a class="tile" href="#" style="--x:{n(x)};--y:{n(y-0)};--w:{cw_d};--h:{n(h)};--mx:{n(mx_)};--my:{n(my_)};--mw:{cw_m};--mh:{n(mh_)};{st}" aria-label="Projeto {n_:02d}">{inner}</a>')
-    s.E('a', (36, dbot + 17.8), (24, mbot + 18.5), 'VER TODOS OS PROJETOS', 'mono', fs=(7, 9), lh=(8.4, 11), style='color:#333', attrs='href="#"')
+    DC, MC = recolor(DL, [t[4] for t in dt]), recolor(ML, [t[4] for t in mt])
+    for i, p_ in enumerate(BH['projects']):          # cor dominante da capa (cores-capas.py); sem ela, fica a paleta
+        if p_.get('cover_color'): DC[i] = MC[i] = p_['cover_color']
+    for (n_, x, y, w, h), (_, mx_, my_, mw_, mh_) in zip(DL, ML):
+        col, mcol = DC[n_ - 1], MC[n_ - 1]
+        tc = txt_on(col)
+        mtc = txt_on(mcol)
+        st = (f'background:{col};' + f'--tc:{tc};--mtc:{mtc};--mbg:{mcol};')
+        pj = BH['projects'][n_ - 1]
+        ttl = H.escape(pj['title'])
+        inner = (f'<img class="t-img" src="{pj["cover_file"]}" alt="" draggable="false" onerror="this.remove()"><i class="t-sh"></i>'
+                 f'<span class="mono t-l">PROJETO</span><span class="disp t-n">{n_:02d}</span><span class="mono t-ti">{ttl}</span><span class="t-a">→</span>')
+        s.raw(f'<a class="tile" data-i="{n_ - 1}" href="{pj["url"]}" target="_blank" rel="noopener" style="--x:{n(x)};--y:{n(y)};--w:{n(w)};--h:{n(h)};--mx:{n(mx_)};--my:{n(my_)};--mw:{n(mw_)};--mh:{n(mh_)};{st}" aria-label="Projeto {n_:02d}: {ttl} (abrir galeria)">{inner}</a>')
+    s.E('a', (36, dbot + 17.8), (24, mbot + 18.5), 'VER TODOS OS PROJETOS', 'mono', fs=(7, 9), lh=(8.4, 11), style='color:#333', attrs=f'href="{BH["profile"]}" target="_blank" rel="noopener"')
     s.R((36, dbot + 40, 686, 1), (24, mbot + 46, 342, 1), '#B5B2AA')
     return [s.html()]
 
@@ -425,7 +484,7 @@ def contato_sections():
     return [s.html(), s2.html()]
 
 if __name__ == '__main__':
-    parts = inicio_sections() + experiencia_sections() + web_sections() + grafico_sections() + contato_sections() + [footer().html()]
+    parts = inicio_sections() + experiencia_sections() + web_sections() + grafico_sections() + contato_sections() + [footer().html(), LB_HTML, lb_data()]
     open('/home/claude/site/index.html', 'w').write(page('J. Erick Prestes — Web, Gráfico, Tech & Code', '\n'.join(parts),
         'Portfólio de J. Erick Prestes: design gráfico, web design e automação com IA.'))
     print('ok')
