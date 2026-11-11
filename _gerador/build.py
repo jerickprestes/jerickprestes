@@ -155,6 +155,12 @@ def page(title, body, desc):
 '''
 
 # ============================================================ INÍCIO
+
+def MQ_WORDS(words):
+    """faixa em marquee infinito: palavras em BauhausBox separadas por filete; 2 cópias idênticas (a 2ª é decorativa)"""
+    g = ''.join(f'<a class="disp bw" href="{h}" style="color:{c};--hc:{hc}">{t}</a><i class="mq-l"></i>' for t, c, hc, h in words)
+    return f'<div class="mq-t"><div class="mq-g">{g}</div><div class="mq-g" aria-hidden="true">{g.replace("<a ", "<a tabindex=\"-1\" ")}</div></div>'
+
 def inicio_sections():
     off = (38, 56)
     hero = Sec(H=569.5 - 38, mH=770 - 56, off=off, attrs='id="inicio"', cls='hero')
@@ -174,21 +180,22 @@ def inicio_sections():
     XH(329, 447, 5, None, None, None, 'sh', 'sh')
     XH(652, 467, 4, None, None, None, 'rt', 'rt')
     XH(667, 526, 7, None, None, None, 'rt', 'rt')
-    hero.T((32.5, 86.5), (22, 85.6), 'web<br>graph<br>tech<br>code', 'disp sh', fs=(66, 64), lh=(66, 64), ls=(.8, .5), tag='h1', style='color:#111')
+    hero.T((32.5, 86.5), (22, 85.6), 'web<br>graph<br>tech<br>IA', 'disp sh', fs=(66, 64), lh=(66, 64), ls=(.8, .5), tag='h1', style='color:#111')
     # bloco azul elástico: borda esquerda na coluna esquerda, borda direita ancorada à direita (desktop 90u, mobile 24u)
     # ---- carrossel da hero: janela que começa na linha do "+" e vai até a borda direita
     HERO_IMG = "https://images.pexels.com/photos/4164418/pexels-photo-4164418.jpeg?auto=compress&w=1260&h=750&dpr=1"
+    HERO_IMGS = {'hs2': 'img/hero/hero-graph.jpg', 'hs3': 'img/hero/hero-tech.jpg', 'hs4': 'img/hero/hero-ia.jpg'}
     SL = [('hs1', 'web', 'Landing pages, e-commerces e sistemas web com WordPress, WooCommerce e Elementor: rápidos, responsivos e feitos para converter.', 'right'),
           ('hs2', 'graph', 'Identidade visual, redes sociais, impresso e embalagem: peças gráficas com linguagem própria e consistência de marca.', 'left'),
           ('hs3', 'tech', 'Do protótipo no Figma à implementação em WordPress, WooCommerce e Elementor, com PHP e JavaScript sob medida.', 'right'),
-          ('hs4', 'code', 'Automação com Python, Adobe Firefly e design via terminal: peças em lote, adaptação de formatos e validação de tudo que a IA entrega.', 'right')]
+          ('hs4', 'IA', 'Engenharia de prompt, Adobe Firefly e Python no fluxo de criação: peças em lote, fotos de produto com iluminação recriada e adaptação de formatos, sempre com validação de tudo que a IA entrega.', 'right')]
     arrow = '<svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M0 4h11M7.5.5L11 4 7.5 7.5"/></svg>'
     sl = ''
     for i, (cl, t, d, _) in enumerate(SL):
-        sl += (f'<article class="hs {cl}"><img class="bgi" src="{HERO_IMG}" alt="" draggable="false" loading="eager">'
+        sl += (f'<article class="hs {cl}"><img class="bgi" src="{HERO_IMGS.get(cl, HERO_IMG)}" alt="" draggable="false" loading="eager">'
                f'<span class="mono hs-i"><b>{i+1:02d}</b> / 04</span><button type="button" class="hs-n" aria-label="Próximo slide">{arrow}</button>'
                f'<h2 class="disp hs-t">{t}</h2><p class="hs-d">{d}</p></article>')
-    hero.E('div', (356, 52, 0, 415), (24, 350, 0, 230), f'<div class="hc-track" id="heroTrack">{sl}</div>', 'hcar', attrs='id="heroCar" role="region" aria-roledescription="carrossel" aria-label="Web, graph, tech e code" tabindex="0"', base='a')
+    hero.E('div', (356, 52, 0, 415), (24, 350, 0, 230), f'<div class="hc-track" id="heroTrack">{sl}</div>', 'hcar', attrs='id="heroCar" role="region" aria-roledescription="carrossel" aria-label="Web, graph, tech e IA" tabindex="0"', base='a')
     hero.E('img', (335, 424.5, 158, 145.5), (236, 456, 134, 124), '', 'sh mrt', style='object-fit:contain', attrs='src="img/pessoa.png" alt="J. Erick Prestes"', base='a')
     hero.items[-1] = hero.items[-1].replace('></img>', '>')
     hero.T((269, 477), None, 'j erick prestes', 'sh', fs=(9,), lh=(10.8,), tag='span', style='color:#444')
@@ -196,7 +203,7 @@ def inicio_sections():
     hero.T((43, 443.7), (24, 596), 'Designer gráfico e web designer<br>com mais de 5 anos em agências<br>e liderança de equipe de criação.', 'nw sh', fs=(10.5, 15), lh=(12.6, 20), ls=(-.1,))
     hero.T((43, 504.1), (24, 679.5), 'PORTFÓLIO / 2026<br>DESIGN · WEB · IA E AUTOMAÇÃO', 'mono sh', fs=(7, 9), lh=(9.7, 13))
     hero.E('a', (43, 538.3), (24, 724.2), 'Ver trabalhos ↘', 'lk sh', fs=(9.5, 13), lh=(11.4, 15.6), attrs='href="#web"')
-    hero.T((616, 517.5, 70), (290, 684.5, 60), '23.0264° S<br>45.5557° W', 'mono rt', fs=(6.8, 8), lh=(10, 11), style='color:#111')
+    hero.T((616, 517.5, 70), (290, 684.5, 60), '23.0310° S<br>45.5644° W', 'mono rt', fs=(6.8, 8), lh=(10, 11), style='color:#111')
 
     # ---- 002
     s2 = Sec(H=128, mH=232, off=(0, 0))
@@ -217,22 +224,35 @@ def inicio_sections():
              ('var(--lime)', 'IA', 'CRIAÇÃO, VELOCIDADE<br>E AUTOMAÇÃO', '#C9C9C9', '#8A8A8A')]
     cs = ''
     for i, (col, word, desc, lc, lcm) in enumerate(cards):
-        cs += (f'<a class="card" href="{"#web" if i in (0,2) else "#grafico" if i==1 else "#contato"}" style="background:{col};--lc:{lc};--lcm:{lcm}">'
+        cs += (f'<a class="card" href="{"#web" if i in (0,2) else "#grafico" if i==1 else "#contato"}" style="background:{col};--cb:{col};--lc:{lc};--lcm:{lcm}">'
                f'<span class="mono c-l">ATUAÇÃO</span><span class="mono c-n">0{i+1}</span><span class="disp c-w">{word}</span><span class="mono c-d">{desc}</span><span class="c-a">→</span></a>')
     s3.E('div', (36, .5, 686, 232), (24, 38, 342, 424), cs, 'cards', base='a')
     # ---- 004 faixa
     s4 = Sec(H=60, mH=140, cls='band on-dark')
     s4.R((0, 0, 735, 60), (0, 0, 390, 140), 'var(--blk)')
     MK(s4, '', 11.5, 8.6, color='#DDD')
-    for txt, dx, mx, col, href in (('web', 46, 24, '#C9C9C9', '#web'), ('graph', 250.5, 124, '#C9C9C9', '#grafico'), ('tech', 483.5, 266.5, '#E8FF3A', '#web')):
-        s4.T((dx, 18.8), (mx, 33.8), txt, 'disp bw', fs=(25.3, 22), lh=(25.3, 22), ls=(0, .4), tag='a', style=f'color:{col};--hc:{"#F72B10" if txt=="web" else "#0373DF" if txt=="graph" else "#fff"}', attrs=f'href="{href}"')
-    s4.R((155, 30.5, 88, 1), (100, 43.7, 16, 1), '#666'); s4.R((383, 30.5, 87, 1), (242.5, 43.7, 16, 1), '#666')
+    s4.E('div', (46, 0, 565, 60), (24, 20, 342, 44), MQ_WORDS([('web', '#C9C9C9', '#F72B10', '#web'), ('graph', '#C9C9C9', '#0373DF', '#grafico'),
+         ('tech', '#E8FF3A', '#fff', '#tech'), ('IA', '#C9C9C9', '#F2FB48', '#ia')]), 'mq', attrs='aria-label="Web, graph, tech e IA"', base='a')
     s4.T((627, 8.9), (24, 80.75), 'DESIGN, CÓDIGO<br>E IA A SERVIÇO<br>DA SUA MARCA.', 'mono', fs=(6.8, 8), lh=(8.2, 10.5), style='color:#F2F2F2')
     s4.T((627, 38.4), (230, 80.75), 'J. ERICK PRESTES<br>© 2026', 'mono', fs=(6.8, 8), lh=(8.2, 10.5), style='color:#F2F2F2')
     return ['<div class="top" id="topo">' + header() + hero.html() + '</div>', s2.html(), s3.html(), s4.html()]
 
 
 # ============================================================ EXPERIÊNCIA
+
+LOGOS = ['sp-leituras', 'talassa', 'cratix', 'monquei', 'tomorrow', 'provoca', 'wave-m', 'imm']
+def LOGOS_MQ():
+    """marquee de logos brancos separados por filete (faixa preta); altura calculada para equilibrar o peso visual"""
+    import math
+    g = ''
+    for nm in LOGOS:
+        f = os.path.join(ROOT, f'img/logos/{nm}_branco.svg')
+        vb = re.search(r'viewBox="[\d.]+ [\d.]+ ([\d.]+) ([\d.]+)"', open(f, encoding='utf-8').read(400)).groups()
+        r = float(vb[0]) / float(vb[1]); h = min(30, math.sqrt(2300 / r))
+        g += f'<img src="img/logos/{nm}_branco.svg" alt="{nm.replace("-", " ").title()}" style="--lh:{h:.1f}" draggable="false"><i class="mq-l"></i>'
+    g2 = re.sub(r'alt="[^"]*"', 'alt=""', g)
+    return f'<div class="mq-t"><div class="mq-g">{g}</div><div class="mq-g" aria-hidden="true">{g2}</div></div>'
+
 def experiencia_sections():
     ROWS = [('AGO 2025 — AGO 2026', 'Supervisor de Projetos', 'EQUIPE DE CRIAÇÃO · TOMORROW AGENCY & BUSINESS',
              'Liderei a equipe de criação de 6 pessoas (copywriter, dois designers, editor de vídeo, gestora de tráfego e web designer) e em média 15 projetos simultâneos. Implantei um fluxo de produção com IA e automação (Python e Adobe Firefly) e estruturei briefing, revisão e aprovação no Monday e no ClickUp.', 72, 192),
@@ -241,18 +261,17 @@ def experiencia_sections():
             ('MAR 2024 — MAI 2024', 'Designer', 'SETOR DE PUBLICIDADE · AGÊNCIA VIRTUA BRASIL', 'Elaboração de criativos e textos para mídias digitais.', 42, 108),
             ('JUN 2022 — MAR 2024', 'Designer', 'SETOR DE MÍDIAS ONLINE · AGÊNCIA PROVOCA', 'Elaboração de criativos para redes sociais.', 42, 108),
             ('DEZ 2021 — JUN 2022', 'Designer', 'EQUIPE DE MARKETING · CLIQUERIA', 'Criação e diagramação de produtos e criativos publicitários.', 42, 108)]
-    ty, mty = 214, 322 + 0
-    Hd = ty + sum(r[4] for r in ROWS) + 72
-    Hm = mty + sum(r[5] for r in ROWS) + 130
+    DS, MS = 20, 44   # sobe o bloco após remover o parágrafo e a legenda
+    ty, mty = 214 - DS, 322 - MS
+    Hd = ty + sum(r[4] for r in ROWS) + 54
+    Hm = mty + sum(r[5] for r in ROWS) + 88
     s = Sec(H=Hd, mH=Hm, attrs='id="experiencia"')
     RULE(s, 0, '#B5B2AA', my=0); MK(s, '', 11.5, 14.6); RL(s, 20.1, 26, Hd - 34)
     s.T((46, 31.5), (24, 51), 'EXPERIÊNCIA', 'xb', fs=(34, 26), lh=(33, 26), ls=(-.9, -.7), tag='h2')
-    s.T((574, 36.5), (24, 92), fmt('Mais de 5 anos em agências|d de publicidade:|m do design|d à liderança da equipe|d de criação.'), 'nw', fs=(9.5, 12), lh=(11, 17))
-    s.T((45, 90), (24, 138), 'LIDERANÇA / SUPERVISOR DE PROJETOS · TOMORROW AGENCY & BUSINESS', 'mono', fs=(6.8, 8), lh=(8.2, 10), tag='span', style='color:#333')
     stats = [('var(--red)', '#111', '6', 'PESSOAS NA EQUIPE<br>LIDERADA'), ('var(--blue)', '#fff', '~15', 'PROJETOS<br>SIMULTÂNEOS'),
-             ('var(--yel)', '#111', '95%', 'ENTREGAS<br>NO PRAZO'), ('var(--lime)', '#111', '~30%', 'MENOS TEMPO DE ENTREGA<br>COM IA E AUTOMAÇÃO')]
+             ('var(--yel)', '#111', '90%', 'DE ENTREGAS<br>AUTOMATIZADAS'), ('var(--lime)', '#111', '~30%', 'MENOS TEMPO DE ENTREGA<br>COM IA E AUTOMAÇÃO')]
     html = ''.join(f'<div class="xst" style="background:{c};color:{t}"><span class="disp xs-n">{n}</span><span class="mono xs-l">{l}</span></div>' for c, t, n, l in stats)
-    s.E('div', (36, 104, 686, 94), (24, 158, 342, 150), html, 'xstats', base='a')
+    s.E('div', (36, 104 - DS, 686, 94), (24, 158 - MS, 342, 150), html, 'xstats', base='a')
     y, my = ty, mty
     for dt, role, comp, desc, h, mh in ROWS:
         s.R((12, y, 710, 1), (12, my, 366, 1), '#8A8A8A')
@@ -262,9 +281,16 @@ def experiencia_sections():
         s.T((410, y + 10.5, 305), (24, my + 76, 342), desc, '', fs=(9, 12), lh=(11.4, 15.5))
         y += h; my += mh
     s.R((12, y, 710, 1), (12, my, 366, 1), '#8A8A8A')
-    s.T((45, y + 10.5), (24, my + 13), 'PARCERIAS E PROJETOS (MEI)', 'mono', fs=(7.5, 9), lh=(9, 11), tag='span', style='color:#333')
-    s.T((190, y + 10.5, 525), (24, my + 36, 342), '<b class="xb">SP Leituras:</b> design ON/OFF para equipamentos e projetos públicos. <b class="xb">Talassa Comunicação e Agência Cratix:</b> conteúdo digital. <b class="xb">Monquei Sites:</b> layouts de landing pages e sites.', '', fs=(9, 12), lh=(11.4, 15.5))
-    return [s.html()]
+    s.R((12, y, 710, 1), (12, my, 366, 1), '#8A8A8A')
+    s.T((45, y + 10.5), (24, my + 13), 'CURRÍCULO / PDF', 'mono', fs=(7.5, 9), lh=(9, 11), tag='span', style='color:#333')
+    s.E('a', (190, y + 10, 190, 30), (24, my + 32, 342, 40), 'Currículo completo <span aria-hidden="true">↓</span>', 'mono dl', fs=(8, 10), lh=(10, 12),
+        attrs='href="docs/J-Erick-Prestes-Curriculo-2026.pdf" download="J-Erick-Prestes-Curriculo-2026.pdf"', base='a')
+    pb = Sec(H=60, mH=140, cls='band on-dark')
+    pb.R((0, 0, 735, 60), (0, 0, 390, 140), 'var(--blk)')
+    MK(pb, '', 11.5, 8.6, color='#DDD')
+    pb.E('div', (46, 0, 565, 60), (24, 20, 342, 44), LOGOS_MQ(), 'mq lg', attrs='aria-label="Parcerias: SP Leituras, Talassa, Cratix, Monquei, Tomorrow, Provoca, Wave M e IMM"', base='a')
+    pb.T((627, 21), (24, 80.75), 'PARCERIAS E<br>PROJETOS (MEI)', 'mono', fs=(6.8, 8), lh=(8.2, 10.5), style='color:#F2F2F2')
+    return [s.html(), pb.html()]
 
 # ============================================================ WEB
 def web_sections():
@@ -339,12 +365,8 @@ def web_sections():
     band = Sec(H=60, mH=140, cls='band on-dark')
     band.R((0, 0, 735, 60), (0, 0, 390, 140), 'var(--blk)')
     MK(band, '004', 11.5, 8.6, color='#DDD')
-    for txt, dx, col in (('layouts', 46, '#C9C9C9'), ('sites', 0, '#C9C9C9'), ('code', 0, '#F2FB48')):
-        pass
-    band.T((46, 18.8), (24, 36), 'layouts', 'disp bw', fs=(25, 16), lh=(25, 16), ls=(.4,), tag='a', style='color:#C9C9C9;--hc:#F72B10', attrs='href="#layouts"')
-    band.T((306, 18.8), (168, 36), 'sites', 'disp bw', fs=(25, 16), lh=(25, 16), ls=(.4,), tag='a', style='color:#C9C9C9;--hc:#0373DF', attrs='href="#layouts"')
-    band.T((516, 18.8), (282, 36), 'code', 'disp bw', fs=(25, 16), lh=(25, 16), ls=(.4,), tag='a', style='color:#F2FB48;--hc:#fff', attrs='href="#contato"')
-    band.R((232, 30.5, 58, 1), (142, 43.2, 16, 1), '#666'); band.R((442, 30.5, 58, 1), (256, 43.2, 16, 1), '#666')
+    band.E('div', (46, 0, 565, 60), (24, 20, 342, 44), MQ_WORDS([('layouts', '#C9C9C9', '#F72B10', '#layouts'), ('sites', '#C9C9C9', '#0373DF', '#layouts'),
+         ('code', '#F2FB48', '#fff', '#contato')]), 'mq', attrs='aria-label="Layouts, sites e code"', base='a')
     band.T((627, 8.9), (24, 80.75), 'LAYOUTS RESPONSIVOS<br>E SITES COM FOCO<br>EM CONVERSÃO.', 'mono', fs=(6.8, 8), lh=(8.2, 10.5), style='color:#F2F2F2')
     band.T((627, 38.4), (230, 80.75), 'J. ERICK PRESTES<br>© 2026', 'mono', fs=(6.8, 8), lh=(8.2, 10.5), style='color:#F2F2F2')
     return [s.html(), s2.html(), s3.html(), band.html()]
@@ -419,15 +441,12 @@ def grafico_sections():
     s.T((43, 219.7), (24, 176), 'Identidade visual, redes sociais, impressos<br>e embalagens: peças criadas em agências<br>e em projetos próprios.', 'nw', fs=(10.5, 14), lh=(12.6, 20), ls=(-.1,))
     s.T((43, 267), (24, 256), 'TRABALHOS SELECIONADOS / 2026<br>SOCIAL · IMPRESSO · IDENTIDADE VISUAL', 'mono', fs=(7, 8.5), lh=(9.7, 12))
     s.E('a', (43, 295), None, 'Ver trabalhos selecionados ↘', 'lk', fs=(9.5,), lh=(11.4,), attrs='href="#projetos"')
-    s.T((662, 271.75), (24, 294), '19 PROJETOS<br class="dm">PUBLICADOS', 'mono', fs=(6.8, 8.5), lh=(8.5, 12))
-    s.items[-1] = s.items[-1].replace('19 PROJETOS<br class="dm">PUBLICADOS', '19 PROJETOS<span class="dm"><br></span><span class="mo"> </span>PUBLICADOS')
     RULE(s, 330, my=330)
     MK(s, '002', 341.5, 338.6)
     RL(s, 20.1, 356, int(dbot + 10) - 356)
     s.T((46, 361.5), (24, 381), 'PROJETOS<br>GRÁFICOS', 'xb', fs=(34, 26), lh=(33, 26), ls=(-.9, -.7), tag='h2', attrs='id="projetos"')
     s.T((574, 366.5), (24, 453.5), fmt('Mosaico com os projetos|d publicados:|m identidade visual,|d campanhas e|m peças gráficas.'), 'nw', fs=(9.5, 12), lh=(11, 17))
-    s.T((46, 439.2), (24, 524.5), '19 / 19', 'mono', fs=(8, 9), lh=(9.6, 11), tag='span')
-    s.R((100, 449.05, 606, .9), (70, 534.55, 296, .9), '#444')
+    s.R((46, 449.05, 660, .9), (24, 534.55, 342, .9), '#444')
     s.E('div', (699, 445.5, 8, 8), (359, 531, 8, 8), '<svg viewBox="0 0 8 8" fill="none" stroke="#444" stroke-width=".9"><path d="M0 0.2L7 4L0 7.8"/></svg>', '')
     RULE(s, 460, '#B5B2AA', my=570)
     DC, MC = recolor(DL, [t[4] for t in dt]), recolor(ML, [t[4] for t in mt])
@@ -443,8 +462,8 @@ def grafico_sections():
         inner = (f'<img class="t-img" src="{pj["cover_file"]}" alt="" draggable="false" onerror="this.remove()"><i class="t-sh"></i>'
                  f'<span class="mono t-l">PROJETO</span><span class="disp t-n">{n_:02d}</span><span class="mono t-ti">{ttl}</span><span class="t-a">→</span>')
         s.raw(f'<a class="tile" data-i="{n_ - 1}" href="{pj["url"]}" target="_blank" rel="noopener" style="--x:{n(x)};--y:{n(y)};--w:{n(w)};--h:{n(h)};--mx:{n(mx_)};--my:{n(my_)};--mw:{n(mw_)};--mh:{n(mh_)};{st}" aria-label="Projeto {n_:02d}: {ttl} (abrir galeria)">{inner}</a>')
-    s.E('a', (36, dbot + 17.8), (24, mbot + 18.5), 'VER TODOS OS PROJETOS', 'mono', fs=(7, 9), lh=(8.4, 11), style='color:#333', attrs=f'href="{BH["profile"]}" target="_blank" rel="noopener"')
-    s.R((36, dbot + 40, 686, 1), (24, mbot + 46, 342, 1), '#B5B2AA')
+    s.E('a', (36, dbot + 10), (24, mbot + 10), '<span class="lb-bl" aria-hidden="true">Bē</span>VER TODOS NO BEHANCE<span aria-hidden="true">↗</span>', 'lb-be mono', style='color:#fff', attrs=f'href="{BH["profile"]}" target="_blank" rel="noopener"')
+    s.R((36, dbot + 60, 686, 1), (24, mbot + 66, 342, 1), '#B5B2AA')
     return [s.html()]
 
 
@@ -521,7 +540,6 @@ def posts_section(key, sid, title, intro, tags_line, blk1, blk2, palette, label)
     s.X(644, 62, 4, 360, 48, 4); s.X(644, 200, 4)
     s.T((43, 219.7), (24, 176), intro, 'nw', fs=(10.5, 14), lh=(12.6, 20), ls=(-.1,))
     s.T((43, 267), (24, 256), tags_line, 'mono', fs=(7, 8.5), lh=(9.7, 12))
-    s.T((662, 271.75), (24, 294), f'{len(P)} POST{"S" if len(P) != 1 else ""}<br>PUBLICADO{"S" if len(P) != 1 else ""}', 'mono', fs=(6.8, 8.5), lh=(8.5, 12))
     RULE(s, 330, my=330)
     for i, p in enumerate(P):
         col = palette[i % len(palette)]; tc = txt_on(col)
@@ -564,7 +582,6 @@ def contato_sections():
     s.X(None, None, None, 358, 112, 4)
     s.T((43, 169.7), (24, 132), 'Vamos conversar sobre o seu próximo projeto: sites, layouts e peças gráficas.', 'nw', fs=(10.5, 14), lh=(12.6, 20), ls=(-.1,))
     s.items[-1] = s.items[-1].replace('próximo projeto:', 'próximo<span class="dm"> </span><span class="mo"><br></span>projeto:')
-    s.T((43, 201.8), (24, 194), 'RETORNO POR E-MAIL OU WHATSAPP', 'mono', fs=(7, 8.5), lh=(8.4, 12))
     s2 = Sec(H=190, mH=410)
     RULE(s2, 0, my=0); MK(s2, '002', 12, 8.6); RL(s2, 20.1, 26.5, 144)
     s2.T((46, 43.5), (24, 49.5), 'VAMOS CONSTRUIR ALGO', 'xb nw', fs=(36, 24), lh=(38, 25), ls=(-1.4, -.7), tag='h2')

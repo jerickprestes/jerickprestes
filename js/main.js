@@ -122,6 +122,21 @@
   if (hc && ht) {
     var H = initCar(hc, ht);
     hc.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.hs-n'); if (b) H.next(); });
+    // troca automática: cada slide fica parado AUTO_MS e então avança; arrastar/clicar/teclar reinicia a contagem
+    var AUTO_MS = 6000, autoT = null, held = false;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    function arm() {
+      clearTimeout(autoT); if (reduce) return;
+      autoT = setTimeout(function () {
+        if (!document.hidden && !held && !hc.classList.contains('dragging')) H.next();
+        arm();
+      }, AUTO_MS);
+    }
+    hc.addEventListener('pointerdown', function () { held = true; clearTimeout(autoT); });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { window.addEventListener(ev, function () { if (held) { held = false; arm(); } }); });
+    hc.addEventListener('click', arm); hc.addEventListener('keydown', arm);
+    document.addEventListener('visibilitychange', arm);
+    arm();
   }
 
   // ---------- lightbox dos projetos (mosaico "Projetos gráficos") ----------
