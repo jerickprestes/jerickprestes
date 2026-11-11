@@ -1,4 +1,6 @@
-import json, html as H
+import json, html as H, os, re, glob
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE) if os.path.basename(HERE) == '_gerador' else HERE
 
 def n(v): return ('%.3f' % v).rstrip('0').rstrip('.')
 
@@ -72,7 +74,7 @@ ARROW_LONG = '<svg class="long" viewBox="0 0 7 8" fill="none" stroke="#444" stro
 
 # ============================================================ cabeçalho
 def header(active=None):
-    links = [('Início', '#topo'), ('Experiência', '#experiencia'), ('Web', '#web'), ('Gráfico', '#grafico'), ('Contato', '#contato')]
+    links = [('Início', '#topo'), ('Experiência', '#experiencia'), ('Web', '#web'), ('Gráfico', '#grafico'), ('Tech', '#tech'), ('IA', '#ia'), ('Contato', '#contato')]
     nav = ''.join(f'<a href="{h}">{l}</a>' for l, h in links)
     return ('<header class="hd">'
         '<div class="hc hc-logo"><a class="disp logo" href="#topo" aria-label="J. Erick Prestes — início">J. erick prestes</a></div>'
@@ -80,7 +82,7 @@ def header(active=None):
         '<div class="hc hc-loc mono dm">BRASIL / SP / TAUBATÉ</div>'
         '<a class="cta dm" href="#footer">Contrate ↗</a>'
         '<button class="menu-btn mo-btn" aria-label="Abrir menu" aria-expanded="false"><i></i><i></i><i></i></button>'
-        '<nav class="navwrap nav" aria-label="Principal móvel"><a href="#topo">Início</a><a href="#experiencia">Experiência</a><a href="#web">Web</a><a href="#grafico">Gráfico</a><a href="#contato">Contato</a><span class="navloc">BRASIL / SP / TAUBATÉ</span></nav>'
+        '<nav class="navwrap nav" aria-label="Principal móvel"><a href="#topo">Início</a><a href="#experiencia">Experiência</a><a href="#web">Web</a><a href="#grafico">Gráfico</a><a href="#tech">Tech</a><a href="#ia">IA</a><a href="#contato">Contato</a><span class="navloc">BRASIL / SP / TAUBATÉ</span></nav>'
         '<i class="hline"></i><i class="mdiv"></i></header>')
 
 def header_fix(html_):  # divisor do botão de menu só no mobile
@@ -125,7 +127,7 @@ def footer():
     s.E('div', (320, 58.1, 366), (40, 241.2, 310), form, '', base='a')
     RULE(s, 429.5, my=1110, mx=(24, 366))
     s.T((46, 451.8), (24, 1130.5), 'J. ERICK PRESTES · © 2026', 'mono', fs=(7, 8.5), lh=(8.4, 11), tag='span', style='color:#333')
-    s.T((430, 451.8), None, '<a href="#topo">INÍCIO</a> &nbsp;&nbsp; <a href="#experiencia">EXPERIÊNCIA</a> &nbsp;&nbsp; <a href="#web">WEB</a> &nbsp;&nbsp; <a href="#grafico">GRÁFICO</a> &nbsp;&nbsp; <a href="#contato">CONTATO</a>', 'mono', fs=(7,), lh=(8.4,), tag='nav', style='color:#333', attrs='aria-label="Rodapé"')
+    s.T((430, 451.8), None, '<a href="#topo">INÍCIO</a> &nbsp;&nbsp; <a href="#experiencia">EXPERIÊNCIA</a> &nbsp;&nbsp; <a href="#web">WEB</a> &nbsp;&nbsp; <a href="#grafico">GRÁFICO</a> &nbsp;&nbsp; <a href="#tech">TECH</a> &nbsp;&nbsp; <a href="#ia">IA</a> &nbsp;&nbsp; <a href="#contato">CONTATO</a>', 'mono', fs=(7,), lh=(8.4,), tag='nav', style='color:#333', attrs='aria-label="Rodapé"')
     s.T((656, 451.8), (250, 1130.5), '<a href="#topo">VOLTAR AO TOPO ↑</a>', 'mono', fs=(7, 8.5), lh=(8.4, 11), tag='span', style='color:#333')
     return s
 
@@ -403,14 +405,14 @@ def txt_on(hexc):
     return '#111' if .2126 * lin(r) + .7152 * lin(g) + .0722 * lin(b_) > .3 else '#fff'
 
 def lb_data():
-    BH = json.load(open('/home/claude/site/data/behance.json', encoding='utf-8'))
+    BH = json.load(open(os.path.join(ROOT, 'data/behance.json'), encoding='utf-8'))
     d = [{'id': p['id'], 't': p['title'], 'u': p['url'], 'i': [[im['file'], im['r']] for im in p['images']]} for p in BH['projects']]
     return '<script type="application/json" id="bhData">' + json.dumps(d, ensure_ascii=False).replace('<', '\\u003c') + '</script>'
 
 # ============================================================ GRÁFICO
 def grafico_sections():
-    T = json.load(open('/home/claude/site/tiles.json'))
-    BH = json.load(open('/home/claude/site/data/behance.json', encoding='utf-8'))
+    T = json.load(open(os.path.join(HERE, 'tiles.json')))
+    BH = json.load(open(os.path.join(ROOT, 'data/behance.json'), encoding='utf-8'))
     dt, mt = T['513'], T['868']
     DL, dbot = rows_layout(DROWS, 686, 36, 470, 4)
     ML, mbot = rows_layout(MROWS, 342, 24, 600, 4)
@@ -454,6 +456,113 @@ def grafico_sections():
     s.R((36, dbot + 40, 686, 1), (24, mbot + 46, 342, 1), '#B5B2AA')
     return [s.html()]
 
+
+# ============================================================ POSTS (Tech / IA) — blog em Markdown
+MESES = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ']
+def data_br(d):
+    try: y, m, dd = d.split('-'); return f'{int(dd):02d} {MESES[int(m) - 1]} {y}'
+    except Exception: return d
+
+def md_inline(t):
+    t = H.escape(t, quote=False)
+    t = re.sub(r'`([^`]+)`', r'<code>\1</code>', t)
+    t = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', t)
+    t = re.sub(r'(?<![*\w])\*([^*\n]+)\*(?!\w)', r'<em>\1</em>', t)
+    t = re.sub(r'!\[([^\]]*)\]\(([^)\s]+)\)', r'<img src="\2" alt="\1" loading="lazy">', t)
+    def link(m):
+        u = m.group(2); ext = u.startswith('http')
+        return f'<a href="{u}"' + (' target="_blank" rel="noopener"' if ext else '') + f'>{m.group(1)}</a>'
+    return re.sub(r'\[([^\]]+)\]\(([^)\s]+)\)', link, t)
+
+def md_to_html(md):
+    out, lines, i = [], md.replace('\r', '').split('\n'), 0
+    while i < len(lines):
+        ln = lines[i]
+        if ln.strip().startswith('```'):
+            lang = ln.strip()[3:].strip(); i += 1; buf = []
+            while i < len(lines) and not lines[i].strip().startswith('```'): buf.append(lines[i]); i += 1
+            out.append(f'<pre><code{(" class=lang-" + lang) if lang else ""}>' + H.escape('\n'.join(buf), quote=False) + '</code></pre>'); i += 1; continue
+        m = re.match(r'^(#{1,4})\s+(.*)$', ln)
+        if m:
+            lv = min(max(len(m.group(1)), 2), 4); out.append(f'<h{lv}>{md_inline(m.group(2))}</h{lv}>'); i += 1; continue
+        if re.match(r'^\s*([-*]|\d+\.)\s+', ln):
+            tag = 'ol' if re.match(r'^\s*\d+\.', ln) else 'ul'; items = []
+            while i < len(lines) and re.match(r'^\s*([-*]|\d+\.)\s+', lines[i]):
+                items.append('<li>' + md_inline(re.sub(r'^\s*([-*]|\d+\.)\s+', '', lines[i])) + '</li>'); i += 1
+            out.append(f'<{tag}>' + ''.join(items) + f'</{tag}>'); continue
+        if ln.startswith('>'):
+            buf = []
+            while i < len(lines) and lines[i].startswith('>'): buf.append(lines[i].lstrip('> ').strip()); i += 1
+            out.append('<blockquote><p>' + md_inline(' '.join(buf)) + '</p></blockquote>'); continue
+        if re.match(r'^(-{3,}|\*{3,})\s*$', ln): out.append('<hr>'); i += 1; continue
+        if not ln.strip(): i += 1; continue
+        buf = []
+        while i < len(lines) and lines[i].strip() and not re.match(r'^(#{1,4}\s|```|>|\s*([-*]|\d+\.)\s)', lines[i]): buf.append(lines[i].strip()); i += 1
+        txt = md_inline(' '.join(buf))
+        out.append(txt if txt.startswith('<img') and txt.endswith('>') else f'<p>{txt}</p>')
+    return '\n'.join(out)
+
+def load_posts(key):
+    posts = []
+    for f in glob.glob(os.path.join(ROOT, 'posts', key, '*.md')):
+        raw = open(f, encoding='utf-8').read()
+        m = re.match(r'^---\n(.*?)\n---\n(.*)$', raw, re.S)
+        meta, body = ({}, raw) if not m else (dict(l.split(':', 1) for l in m.group(1).split('\n') if ':' in l), m.group(2))
+        meta = {k.strip(): v.strip() for k, v in meta.items()}
+        posts.append({'slug': os.path.splitext(os.path.basename(f))[0], 'title': meta.get('title', os.path.basename(f)), 'date': meta.get('date', ''),
+                      'tags': [t.strip() for t in meta.get('tags', '').split(',') if t.strip()], 'summary': meta.get('summary', ''),
+                      'cover': meta.get('cover', ''), 'draft': meta.get('draft', '').lower() in ('true', 'sim', '1'), 'html': md_to_html(body)})
+    return sorted(posts, key=lambda p: p['date'], reverse=True)
+
+def posts_section(key, sid, title, intro, tags_line, blk1, blk2, palette, label):
+    P = load_posts(key); N = max(len(P), 1)
+    rows = (N + 2) // 3
+    CW, CG, TH, BH_ = 218, 16, 150, 60      # desktop: largura do card, espaço, altura da miniatura, altura do texto
+    dY0, mY0, MTH, MBH, MG = 350, 360, 190, 66, 26
+    dbot = dY0 + rows * (TH + BH_) + (rows - 1) * 26
+    mbot = mY0 + N * (MTH + MBH) + (N - 1) * MG
+    s = Sec(H=int(dbot + 60), mH=int(mbot + 60), attrs=f'id="{sid}"')
+    RULE(s, 8)
+    MK(s, '001', 19.5, 18.6); RL(s, 20.1, 34, int(dbot) - 34 + 20, )
+    s.T((34, 50), (22, 49.6), title, 'disp', fs=(120, 64), lh=(120, 64), ls=(1, .8), tag='h1', style='color:#111')
+    s.R((655, 62, 80, 126), (366, 40, 24, 100), blk1)
+    s.R((560, 214, 70, 70), (290, 112, 56, 56), blk2)
+    s.X(644, 62, 4, 360, 48, 4); s.X(644, 200, 4)
+    s.T((43, 219.7), (24, 176), intro, 'nw', fs=(10.5, 14), lh=(12.6, 20), ls=(-.1,))
+    s.T((43, 267), (24, 256), tags_line, 'mono', fs=(7, 8.5), lh=(9.7, 12))
+    s.T((662, 271.75), (24, 294), f'{len(P)} POST{"S" if len(P) != 1 else ""}<br>PUBLICADO{"S" if len(P) != 1 else ""}', 'mono', fs=(6.8, 8.5), lh=(8.5, 12))
+    RULE(s, 330, my=330)
+    for i, p in enumerate(P):
+        col = palette[i % len(palette)]; tc = txt_on(col)
+        cx, cy = 36 + (i % 3) * (CW + CG), dY0 + (i // 3) * (TH + BH_ + 26)
+        my_ = mY0 + i * (MTH + MBH + MG)
+        cover = f'<img class="t-img" src="{H.escape(p["cover"])}" alt="" draggable="false" onerror="this.remove()"><i class="t-sh"></i>' if p['cover'] else ''
+        tags = ' · '.join(H.escape(t).upper() for t in p['tags'][:3])
+        flag = '<span class="mono pc-dr">RASCUNHO</span>' if p['draft'] else ''
+        s.raw(f'<a class="pc" data-p="{key}:{i}" href="#{sid}" style="--x:{cx};--y:{cy};--w:{CW};--h:{TH + BH_};--mx:24;--my:{my_};--mw:342;--mh:{MTH + MBH};--th:{TH};--mth:{MTH};'
+              f'--c:{col};--tc:{tc}" aria-label="Ler: {H.escape(p["title"])}">'
+              f'<span class="pc-t{" cv" if p["cover"] else ""}">{cover}<span class="mono t-l">{label}</span><span class="disp t-n">{i + 1:02d}</span>{flag}<span class="t-a">→</span></span>'
+              f'<span class="pc-b"><span class="mono pc-tags">{tags}</span><span class="pc-ti">{H.escape(p["title"])}</span><span class="mono pc-dt">{data_br(p["date"])}</span></span></a>')
+    return [s.html()], {'k': key, 'p': [{'t': q['title'], 'd': data_br(q['date']), 'g': q['tags'], 'draft': q['draft'], 'h': q['html']} for q in P]}
+
+def tech_ia_sections():
+    s1, d1 = posts_section('tech', 'tech', 'tech', 'Soluções que desenvolvi: WordPress, WooCommerce,<br>integrações e infraestrutura, explicadas passo a passo.',
+                           'ARTIGOS / DESENVOLVIMENTO<br>WORDPRESS · PHP · INFRA', 'var(--blue)', 'var(--yel)', ['#0373DF', '#F1C608', '#F72B10', '#F2FB48'], 'TECH')
+    s2, d2 = posts_section('ia', 'ia', 'ia', 'Como uso inteligência artificial no trabalho:<br>geração de imagem, prompts e automações.',
+                           'ARTIGOS / INTELIGÊNCIA ARTIFICIAL<br>PROMPTS · IMAGEM · AUTOMAÇÃO', 'var(--red)', 'var(--lime)', ['#F72B10', '#F2FB48', '#0373DF', '#F1C608'], 'IA')
+    return s1 + s2, {d1['k']: d1['p'], d2['k']: d2['p']}
+
+PB_HTML = '''<div class="lb pb" id="pb" role="dialog" aria-modal="true" aria-labelledby="pbTitle" aria-hidden="true">
+<div class="lb-bar">
+<div class="lb-id"><span class="mono lb-num" id="pbKick"></span><h3 class="xb lb-title" id="pbTitle"></h3></div>
+<div class="lb-act">
+<button class="lb-nav" id="pbPrev" type="button" aria-label="Post anterior">←</button>
+<button class="lb-nav" id="pbNext" type="button" aria-label="Próximo post">→</button>
+<button class="lb-x" id="pbClose" type="button" aria-label="Fechar">✕</button>
+</div></div>
+<div class="lb-body" id="pbBody"><article class="art" id="pbArt"></article></div>
+</div>'''
+
 # ============================================================ CONTATO
 def contato_sections():
     s = Sec(H=259.5, mH=250, attrs='id="contato"')
@@ -484,7 +593,12 @@ def contato_sections():
     return [s.html(), s2.html()]
 
 if __name__ == '__main__':
-    parts = inicio_sections() + experiencia_sections() + web_sections() + grafico_sections() + contato_sections() + [footer().html(), LB_HTML, lb_data()]
-    open('/home/claude/site/index.html', 'w').write(page('J. Erick Prestes — Web, Gráfico, Tech & Code', '\n'.join(parts),
+    # a ordem de chamada define a numeração dos marcadores (001, 002…): sempre na ordem em que aparecem na página
+    p_ini, p_exp, p_web, p_graf = inicio_sections(), experiencia_sections(), web_sections(), grafico_sections()
+    ti_secs, ti_data = tech_ia_sections()
+    p_cont = contato_sections()
+    pb_data = '<script type="application/json" id="pbData">' + json.dumps(ti_data, ensure_ascii=False).replace('<', '\\u003c') + '</script>'
+    parts = p_ini + p_exp + p_web + p_graf + ti_secs + p_cont + [footer().html(), LB_HTML, lb_data(), PB_HTML, pb_data]
+    open(os.path.join(ROOT, 'index.html'), 'w', encoding='utf-8').write(page('J. Erick Prestes — Web, Gráfico, Tech & Code', '\n'.join(parts),
         'Portfólio de J. Erick Prestes: design gráfico, web design e automação com IA.'))
     print('ok')

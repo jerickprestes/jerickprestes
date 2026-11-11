@@ -191,4 +191,50 @@
       }
     });
   }
+
+  // ---------- leitor de artigos (seções Tech / IA) ----------
+  var pb = document.getElementById('pb'), pdEl = document.getElementById('pbData');
+  if (pb && pdEl) {
+    var PD = JSON.parse(pdEl.textContent), pk = '', pi = 0, pLast = null;
+    var pbTitle = document.getElementById('pbTitle'), pbKick = document.getElementById('pbKick'), pbArt = document.getElementById('pbArt'),
+        pbBody = document.getElementById('pbBody'), pbPrev = document.getElementById('pbPrev'), pbNext = document.getElementById('pbNext'), pbClose = document.getElementById('pbClose');
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+    function showPost(k, i) {
+      var L = PD[k]; if (!L || !L.length) return;
+      pk = k; pi = (i + L.length) % L.length; var p = L[pi];
+      pbKick.textContent = (k === 'ia' ? 'IA' : 'TECH') + ' · ' + p.d + (p.draft ? ' · RASCUNHO' : '') + '  (' + (pi + 1) + '/' + L.length + ')';
+      pbTitle.textContent = p.t;
+      pbArt.innerHTML = '<div class="art-tags">' + p.g.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>' + p.h;
+      pbBody.scrollTop = 0;
+    }
+    function openPost(k, i) {
+      pLast = document.activeElement; showPost(k, i);
+      pb.classList.add('on'); pb.setAttribute('aria-hidden', 'false'); document.documentElement.style.overflow = 'hidden'; pbClose.focus();
+    }
+    function closePost() {
+      pb.classList.remove('on'); pb.setAttribute('aria-hidden', 'true'); document.documentElement.style.overflow = '';
+      if (pLast && pLast.focus) pLast.focus();
+    }
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('.pc[data-p]');
+      if (a && !(e.button || e.metaKey || e.ctrlKey || e.shiftKey)) { e.preventDefault(); var s = a.getAttribute('data-p').split(':'); openPost(s[0], +s[1]); return; }
+      var l = e.target.closest && pb.classList.contains('on') && e.target.closest('#pbArt a[href^="#"]');   // links internos (#grafico…) fecham o leitor
+      if (l) closePost();
+    });
+    pbClose.addEventListener('click', closePost);
+    pbPrev.addEventListener('click', function () { showPost(pk, pi - 1); });
+    pbNext.addEventListener('click', function () { showPost(pk, pi + 1); });
+    pbBody.addEventListener('click', function (e) { if (e.target === pbBody) closePost(); });
+    document.addEventListener('keydown', function (e) {
+      if (!pb.classList.contains('on')) return;
+      if (e.key === 'Escape') closePost();
+      else if (e.key === 'ArrowLeft') showPost(pk, pi - 1);
+      else if (e.key === 'ArrowRight') showPost(pk, pi + 1);
+      else if (e.key === 'Tab') {
+        var f = [pbPrev, pbNext, pbClose], i = f.indexOf(document.activeElement);
+        if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+  }
 })();

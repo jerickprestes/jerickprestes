@@ -1,0 +1,28 @@
+COMO PUBLICAR UM POST
+=====================
+1. Crie um arquivo .md em posts/tech/ (seção Tech) ou posts/ia/ (seção IA). O nome vira o endereço (ex.: meu-post.md).
+2. Comece com o cabeçalho entre "---" e depois escreva o texto:
+
+---
+title: Título do post
+date: 2026-11-20
+tags: WordPress, PHP
+summary: Uma frase que aparece no card.
+cover: img/posts/minha-capa.jpg      (opcional; sem capa, o card usa só a cor)
+---
+
+## Subtítulo
+Texto com **negrito**, *itálico*, `código` e [links](https://exemplo.com).
+
+- listas
+- com marcadores
+
+```php
+// blocos de código
+```
+
+![descrição da imagem](img/posts/minha-imagem.jpg)
+
+3. Para esconder a etiqueta "RASCUNHO", NÃO coloque "draft: true" no cabeçalho.
+4. Rode  python3 _gerador/build.py  (gera o index.html) e envie ao GitHub.
+Os posts aparecem do mais novo para o mais antigo (pela data).
