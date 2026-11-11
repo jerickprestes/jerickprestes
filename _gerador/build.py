@@ -127,7 +127,7 @@ def footer():
     s.E('div', (320, 58.1, 366), (40, 241.2, 310), form, '', base='a')
     RULE(s, 429.5, my=1110, mx=(24, 366))
     s.T((46, 451.8), (24, 1130.5), 'J. ERICK PRESTES · © 2026', 'mono', fs=(7, 8.5), lh=(8.4, 11), tag='span', style='color:#333')
-    s.T((430, 451.8), None, '<a href="#topo">INÍCIO</a> &nbsp;&nbsp; <a href="#experiencia">EXPERIÊNCIA</a> &nbsp;&nbsp; <a href="#web">WEB</a> &nbsp;&nbsp; <a href="#grafico">GRÁFICO</a> &nbsp;&nbsp; <a href="#tech">TECH</a> &nbsp;&nbsp; <a href="#ia">IA</a> &nbsp;&nbsp; <a href="#contato">CONTATO</a>', 'mono', fs=(7,), lh=(8.4,), tag='nav', style='color:#333', attrs='aria-label="Rodapé"')
+    s.T((320, 451.8), None, '<a href="#topo">INÍCIO</a> &nbsp;&nbsp; <a href="#experiencia">EXPERIÊNCIA</a> &nbsp;&nbsp; <a href="#web">WEB</a> &nbsp;&nbsp; <a href="#grafico">GRÁFICO</a> &nbsp;&nbsp; <a href="#tech">TECH</a> &nbsp;&nbsp; <a href="#ia">IA</a> &nbsp;&nbsp; <a href="#contato">CONTATO</a>', 'mono', fs=(7,), lh=(8.4,), tag='nav', style='color:#333', attrs='aria-label="Rodapé"')
     s.T((656, 451.8), (250, 1130.5), '<a href="#topo">VOLTAR AO TOPO ↑</a>', 'mono', fs=(7, 8.5), lh=(8.4, 11), tag='span', style='color:#333')
     return s
 
@@ -199,21 +199,12 @@ def inicio_sections():
     hero.T((616, 517.5, 70), (290, 684.5, 60), '23.0264° S<br>45.5557° W', 'mono rt', fs=(6.8, 8), lh=(10, 11), style='color:#111')
 
     # ---- 002
-    s2 = Sec(H=161, mH=400, off=(0, 0))
+    s2 = Sec(H=128, mH=232, off=(0, 0))
     RULE(s2, 0, my=0)
     MK(s2, '002', 12, 8.6)
-    RL(s2, 20.1, 26.5, 114)
+    RL(s2, 20.1, 26.5, 80)
     s2.T((46, 21), (24, 44.5), 'DESIGN, CÓDIGO E IA /<br>PARA MARCAS QUE QUEREM<br>SE DESTACAR.', 'xb nw', fs=(34, 22), lh=(33, 23), ls=(-.9, -.7), tag='h2')
     s2.T((574, 37), (24, 127), fmt('Mais de 5 anos em|d agências de |mpublicidade:|d design digital,|m impresso|d e web, com IA e|automação no processo.'), 'nw', fs=(9.5, 13), lh=(11, 18))
-    labs = ['CONTEÚDO', 'IMPRESSO', 'DIGITAL', 'AUTOMAÇÃO']
-    lis = ''
-    widths = [181, 170, 162, 164]
-    for i, lab in enumerate(labs):
-        last = i == 3
-        lis += (f'<li style="width:{widths[i]}rem"><span class="n">0{i+1}</span><span class="l">{lab}</span><i class="ln"></i>' + (ARROW_LONG if last else '') +
-                '<svg class="chev" viewBox="0 0 7 10" fill="none" stroke="#444" stroke-width=".9"><path d="M.5.5L6 5 .5 9.5"/></svg></li>')
-    s2.E('ol', (45, 128.7, 661, 20), (24, 232, 342, 168), lis, 'idx', base='a')
-    s2.items[-1] = s2.items[-1].replace('class="a idx"', 'class="a idx"')
 
     # ---- 003 cards
     s3 = Sec(H=232.5, mH=480)
