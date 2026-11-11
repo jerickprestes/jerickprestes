@@ -1,0 +1,97 @@
+(function () {
+  // 1vw sem a barra de rolagem: mantém a página exatamente na largura visível
+  function setVw() { document.documentElement.style.setProperty('--vw', (document.documentElement.clientWidth / 100) + 'px'); }
+  setVw(); window.addEventListener('resize', setVw); window.addEventListener('load', setVw);
+  // menu mobile
+  var hd = document.querySelector('.hd'), btn = document.querySelector('.menu-btn');
+  if (btn) {
+    btn.addEventListener('click', function () {
+      var open = document.body.classList.toggle('menu-open');
+      btn.setAttribute('aria-expanded', open);
+      btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+    });
+    document.querySelectorAll('.navwrap a').forEach(function (a) {
+      a.addEventListener('click', function () { document.body.classList.remove('menu-open'); });
+    });
+  }
+  // formulário: abre o e-mail já preenchido (site estático — troque por seu endpoint/back-end quando houver)
+  var form = document.getElementById('form-contato');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var msg = form.querySelector('.ft-msg'), f = form.elements;
+      if (!f.nome.value.trim() || !/.+@.+\..+/.test(f.email.value)) {
+        msg.textContent = 'Preencha nome e um e-mail válido.'; return;
+      }
+      var body = 'Nome: ' + f.nome.value + '\nE-mail: ' + f.email.value + '\nTelefone/WhatsApp: ' + f.telefone.value +
+        '\nTipo de projeto: ' + f.tipo.value + '\nPrazo desejado: ' + f.prazo.value + '\n\n' + f.mensagem.value;
+      msg.textContent = 'Abrindo seu aplicativo de e-mail…';
+      window.location.href = 'mailto:jerickprestes@gmail.com?subject=' + encodeURIComponent('Contato pelo site — ' + f.tipo.value) + '&body=' + encodeURIComponent(body);
+    });
+  }
+
+  // ---------- carrossel de layouts: arrastar (mouse/touch), setas, teclado + thumbnail que desliza no hover ----------
+  var car = document.getElementById('car'), track = document.getElementById('carTrack');
+  if (car && track) {
+    var cards = track.children, x = 0, target = 0, dragging = false, startX = 0, startPos = 0, lastX = 0, lastT = 0, vel = 0, moved = 0, raf = null;
+    var cur = document.getElementById('carCur'), prev = document.getElementById('carPrev'), next = document.getElementById('carNext');
+    function step() { return cards.length > 1 ? cards[1].offsetLeft - cards[0].offsetLeft : car.clientWidth; }
+    function minX() { return Math.min(0, car.clientWidth - track.scrollWidth); }
+    function clamp(v) { return Math.max(minX(), Math.min(0, v)); }
+    function idx() { return Math.max(0, Math.min(cards.length - 1, Math.round(-x / step()))); }
+    function ui() {
+      var i = idx(); if (cur) cur.textContent = (i < 9 ? '0' : '') + (i + 1);
+      if (prev) prev.disabled = x > -2; if (next) next.disabled = x <= minX() + 2;
+    }
+    function tick() {
+      x += (target - x) * (dragging ? 0.5 : 0.14);
+      if (Math.abs(target - x) < 0.3) { x = target; raf = null; } else raf = requestAnimationFrame(tick);
+      track.style.transform = 'translate3d(' + x + 'px,0,0)'; ui();
+    }
+    function go(t) { target = clamp(t); if (!raf) raf = requestAnimationFrame(tick); }
+    function snap(v) { return clamp(-Math.round(-v / step()) * step()); }
+    car.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      dragging = true; moved = 0; startX = lastX = e.clientX; startPos = x; lastT = performance.now(); vel = 0;
+      car.setPointerCapture(e.pointerId);
+    });
+    car.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - startX; moved = Math.max(moved, Math.abs(dx));
+      if (moved > 4) car.classList.add('dragging');
+      var now = performance.now(), dt = Math.max(1, now - lastT);
+      vel = 0.8 * vel + 0.2 * ((e.clientX - lastX) / dt); lastX = e.clientX; lastT = now;
+      var t = startPos + dx, mn = minX();
+      if (t > 0) t = t * 0.35; else if (t < mn) t = mn + (t - mn) * 0.35;   // resistência nas pontas
+      target = t; if (!raf) raf = requestAnimationFrame(tick);
+    });
+    function end() {
+      if (!dragging) return; dragging = false;
+      var proj = x + vel * 220;   // inércia
+      go(snap(proj));
+      setTimeout(function () { car.classList.remove('dragging'); }, 0);
+    }
+    car.addEventListener('pointerup', end); car.addEventListener('pointercancel', end);
+    car.addEventListener('click', function (e) { if (moved > 4) { e.preventDefault(); e.stopPropagation(); } }, true);
+    car.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    if (prev) prev.addEventListener('click', function () { go(snap(x + step() * 0.6)); });
+    if (next) next.addEventListener('click', function () { go(snap(x - step() * 0.6)); });
+    car.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(snap(x - step() * 0.6)); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(snap(x + step() * 0.6)); }
+    });
+    // thumbnail: distância exata até o fim do print + duração proporcional
+    function measure() {
+      track.querySelectorAll('.lc-p').forEach(function (box) {
+        var im = box.querySelector('img'); if (!im || !im.naturalWidth) return;
+        var dist = Math.max(0, im.getBoundingClientRect().height - box.clientHeight);
+        // getBoundingClientRect não muda com transform em translateY (altura), então é seguro
+        box.style.setProperty('--dist', dist + 'px');
+        box.style.setProperty('--dur', Math.min(9, Math.max(3, dist / 110)) + 's');
+      });
+      x = target = clamp(x); track.style.transform = 'translate3d(' + x + 'px,0,0)'; ui();
+    }
+    track.querySelectorAll('img').forEach(function (im) { im.addEventListener('load', measure); });
+    window.addEventListener('resize', measure); window.addEventListener('load', measure); measure();
+  }
+})();
