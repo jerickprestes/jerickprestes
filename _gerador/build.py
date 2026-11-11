@@ -114,12 +114,12 @@ def footer():
     # formulário
     form = '''<form class="ft-form" id="form-contato" novalidate>
 <div class="fld"><label for="f-nome">Nome</label><input id="f-nome" name="nome" type="text" placeholder="Seu nome completo" autocomplete="name" required></div>
-<div class="fld"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" placeholder="seu@email.com" autocomplete="email" required></div>
+<div class="fld"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" placeholder="seu@email.com (opcional)" autocomplete="email"></div>
 <div class="fld"><label for="f-tel">Telefone / WhatsApp</label><input id="f-tel" name="telefone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel"></div>
 <div class="fld"><label for="f-tipo">Tipo de projeto</label><select id="f-tipo" name="tipo"><option>Site institucional</option><option>Landing page</option><option>E-commerce / loja virtual</option><option>Identidade visual</option><option>Peças gráficas e social media</option><option>Automação / IA</option><option>Outro</option></select></div>
 <div class="fld full"><label for="f-prazo">Prazo desejado</label><select id="f-prazo" name="prazo"><option>Urgente (até 15 dias)</option><option>Até 30 dias</option><option>Até 60 dias</option><option>Sem pressa</option></select></div>
 <div class="fld full"><label for="f-msg">Conte um pouco do que você precisa</label><textarea id="f-msg" name="mensagem" placeholder="Descreva brevemente seu projeto..."></textarea></div>
-<button class="send" type="submit">Enviar e começar a conversa ↗</button>
+<button class="send" type="submit">Enviar pelo WhatsApp ↗</button>
 <p class="ft-msg" role="status" aria-live="polite"></p>
 </form>'''
     s.E('div', (320, 58.1, 366), (40, 241.2, 310), form, '', base='a')

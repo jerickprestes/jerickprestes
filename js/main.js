@@ -14,19 +14,24 @@
       a.addEventListener('click', function () { document.body.classList.remove('menu-open'); });
     });
   }
-  // formulário: abre o e-mail já preenchido (site estático — troque por seu endpoint/back-end quando houver)
+  // formulário: monta a mensagem e abre o WhatsApp (wa.me) já preenchida — site estático, sem back-end
+  var WA_NUMERO = '5512981452330';   // (12) 98145-2330 — formato internacional, só dígitos
   var form = document.getElementById('form-contato');
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var msg = form.querySelector('.ft-msg'), f = form.elements;
-      if (!f.nome.value.trim() || !/.+@.+\..+/.test(f.email.value)) {
-        msg.textContent = 'Preencha nome e um e-mail válido.'; return;
-      }
-      var body = 'Nome: ' + f.nome.value + '\nE-mail: ' + f.email.value + '\nTelefone/WhatsApp: ' + f.telefone.value +
-        '\nTipo de projeto: ' + f.tipo.value + '\nPrazo desejado: ' + f.prazo.value + '\n\n' + f.mensagem.value;
-      msg.textContent = 'Abrindo seu aplicativo de e-mail…';
-      window.location.href = 'mailto:jerickprestes@gmail.com?subject=' + encodeURIComponent('Contato pelo site — ' + f.tipo.value) + '&body=' + encodeURIComponent(body);
+      if (!f.nome.value.trim()) { msg.textContent = 'Preencha seu nome.'; f.nome.focus(); return; }
+      if (f.email.value.trim() && !/.+@.+\..+/.test(f.email.value)) { msg.textContent = 'Confira o e-mail digitado.'; f.email.focus(); return; }
+      var L = ['Olá, Erick! Vim pelo seu site e gostaria de conversar sobre um projeto.', '',
+        '*Nome:* ' + f.nome.value.trim()];
+      if (f.email.value.trim()) L.push('*E-mail:* ' + f.email.value.trim());
+      if (f.telefone.value.trim()) L.push('*Telefone/WhatsApp:* ' + f.telefone.value.trim());
+      L.push('*Tipo de projeto:* ' + f.tipo.value, '*Prazo desejado:* ' + f.prazo.value);
+      if (f.mensagem.value.trim()) L.push('', '*Sobre o projeto:*', f.mensagem.value.trim());
+      var url = 'https://wa.me/' + WA_NUMERO + '?text=' + encodeURIComponent(L.join('\n'));
+      msg.textContent = 'Abrindo o WhatsApp…';
+      if (!window.open(url, '_blank', 'noopener')) window.location.href = url;   // se o navegador bloquear a nova aba
     });
   }
 
