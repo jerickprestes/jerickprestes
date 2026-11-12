@@ -464,7 +464,6 @@ def grafico_sections():
                  f'<span class="mono t-l">PROJETO</span><span class="disp t-n">{n_:02d}</span><span class="mono t-ti">{ttl}</span><span class="t-a">→</span>')
         s.raw(f'<a class="tile" data-i="{n_ - 1}" href="{pj["url"]}" target="_blank" rel="noopener" style="--x:{n(x)};--y:{n(y)};--w:{n(w)};--h:{n(h)};--mx:{n(mx_)};--my:{n(my_)};--mw:{n(mw_)};--mh:{n(mh_)};{st}" aria-label="Projeto {n_:02d}: {ttl} (abrir galeria)">{inner}</a>')
     s.E('a', (36, dbot + 10), (24, mbot + 10), '<span class="lb-bl" aria-hidden="true">Bē</span>VER TODOS NO BEHANCE<span aria-hidden="true">↗</span>', 'lb-be mono', style='color:#fff', attrs=f'href="{BH["profile"]}" target="_blank" rel="noopener"')
-    s.R((36, dbot + 60, 686, 1), (24, mbot + 66, 342, 1), '#B5B2AA')
     return [s.html()]
 
 
