@@ -2,7 +2,7 @@
 
 Portfólio de design gráfico, web e automação com IA. Site estático (HTML, CSS e JavaScript puros), publicado no GitHub Pages.
 
-**Site:** https://jerickprestes.github.io/
+**Site:** https://jerickprestes.github.io/jerickprestes
 
 ## Estrutura
 
