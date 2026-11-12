@@ -311,24 +311,25 @@ def web_sections():
     s2.T((46, 31.5), (24, 51), 'LAYOUTS<br>PRODUZIDOS', 'xb', fs=(34, 26), lh=(33, 26), ls=(-.9, -.7), tag='h2')
     s2.T((574, 36.5), (24, 119.5), fmt('Galeria de layouts e protótipos<span class="dm"><br>de</span><span class="mo"> de<br></span> interfaces criados para|d landing pages,|m e-commerces|d e sistemas web.'), 'nw', fs=(9.5, 12), lh=(11, 17))
     # controles do carrossel (contador + linha + setas)
-    ctrl = ('<span class="mono cc-n"><b id="carCur">01</b> / 06</span><i class="ln"></i>'
+    ctrl = ('<span class="mono cc-n"><b id="carCur">01</b> / 07</span><i class="ln"></i>'
             '<button type="button" class="cc-b" id="carPrev" aria-label="Layout anterior"><svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 4H1M4.5.5L1 4l3.5 3.5"/></svg></button>'
             '<button type="button" class="cc-b" id="carNext" aria-label="Próximo layout"><svg viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1"><path d="M0 4h11M7.5.5L11 4 7.5 7.5"/></svg></button>')
     s2.E('div', (45, 124.2, 661, 20), (24, 186, 342, 24), ctrl, 'cc', base='a')
     RULE(s2, 160, '#B5B2AA', my=None, hide_m=True)
-    L = [('var(--red)', '#111', 'SP Leituras 2025', 'Site institucional de projetos públicos', 'sp-leituras-2025'),
-         ('var(--blue)', '#D7E2FF', 'Cookies da Kel', 'Design Mobile-First para delivery', 'cookies-da-kels'),
-         ('var(--lime)', '#111', 'Clube de Negócios LMA', 'Design moderno focado em conversão e UX', 'clube-lma'),
-         ('var(--yel)', '#111', 'Fillos', 'Layout institucional clean e responsivo', 'fillos'),
-         ('#fff', '#111', 'Mayra Hall', 'Landing page de bem-estar e saúde', 'mayra-hall'),
-         ('var(--red)', '#111', 'Jornada Literária', 'Landing page de evento literário', 'jornada-literaria-2025')]
+    L = [('var(--red)', '#111', 'SP Leituras 2025', 'Site institucional de projetos públicos', 'sp-leituras-2025', 'https://jerickprestes.github.io/sp-leituras-2025/'),
+         ('var(--blue)', '#D7E2FF', 'Cookies da Kel', 'Design Mobile-First para delivery', 'cookies-da-kels', 'https://jerickprestes.github.io/cookies-da-kels/'),
+         ('var(--lime)', '#111', 'Clube de Negócios LMA', 'Design moderno focado em conversão e UX', 'clube-lma', 'https://jerickprestes.github.io/clube-negocios-lma/'),
+         ('var(--yel)', '#111', 'Fillos', 'Layout institucional clean e responsivo', 'fillos', 'https://jerickprestes.github.io/fillos-landing-page/'),
+         ('#fff', '#111', 'Mayra Hall', 'Landing page de bem-estar e saúde', 'mayra-hall', 'https://jerickprestes.github.io/mayra-hall-landing-page/'),
+         ('var(--red)', '#111', 'Jornada Literária', 'Landing page de evento literário', 'jornada-literaria-2025', 'https://jerickprestes.github.io/jornada-literaria-landing/'),
+         ('var(--blue)', '#D7E2FF', 'Daniela Ballabio', 'Site institucional de arquitetura e design', 'daniela-ballabio', 'https://jerickprestes.github.io/daniela-ballabio/')]
     cs = ''
-    for i, (col, lc, t, dsc, img) in enumerate(L):
+    for i, (col, lc, t, dsc, img, url) in enumerate(L):
         bd = ';box-shadow:inset 0 0 0 1px #111' if col == '#fff' else ''
         cs += (f'<article class="lcard" style="background:{col}{bd}"><span class="mono lc-l" style="color:{lc}">LAYOUT</span><span class="disp lc-n">{i+1:02d}</span>'
                f'<span class="lc-p"><img src="img/layouts/{img}.jpg" alt="Prévia do layout {t}" loading="lazy" draggable="false"></span>'
                f'<span class="mono lc-c">PRÉVIA DO LAYOUT</span><h3 class="xb lc-t">{t}</h3><p class="lc-d">{dsc}</p>'
-               f'<a class="lk lc-k" href="https://github.com/jerickprestes/" target="_blank" rel="noopener" aria-label="Acessar projeto {t}">Acessar projeto ↗</a></article>')
+               f'<a class="lk lc-k" href="{url}" target="_blank" rel="noopener" aria-label="Acessar projeto {t}">Acessar projeto ↗</a></article>')
     s2.E('div', (36, 160, 699, 340), (24, 228, 366, 320), f'<div class="car-track" id="carTrack">{cs}</div>', 'car', attrs='id="car" role="region" aria-roledescription="carrossel" aria-label="Layouts produzidos" tabindex="0"', base='a')
     s2.mH = 228 + 320 + 28
     # ---- 003 sites
