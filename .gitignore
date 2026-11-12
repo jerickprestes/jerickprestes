@@ -1,5 +1,5 @@
-*.py
-__pycache__/
 *.bak*
 .DS_Store
 Thumbs.db
+*.tar.gz
+*.zip
