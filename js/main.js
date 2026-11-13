@@ -219,7 +219,10 @@
       pk = k; pi = (i + L.length) % L.length; var p = L[pi];
       pbKick.textContent = (k === 'ia' ? 'IA' : 'TECH') + ' · ' + p.d + (p.draft ? ' · RASCUNHO' : '') + '  (' + (pi + 1) + '/' + L.length + ')';
       pbTitle.textContent = p.t;
-      pbArt.innerHTML = '<div class="art-tags">' + p.g.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>' + p.h;
+      var ban = '<div class="pb-ban' + (p.c ? ' cv' : '') + '" style="--c:' + esc(p.col || '#ddd') + ';--tc:' + esc(p.tc || '#111') + '">' +
+        (p.c ? '<img src="' + esc(p.c) + '" alt="" draggable="false" onerror="this.parentNode.classList.remove(\'cv\');this.remove()">' : '') +
+        '<span class="mono pb-l">' + (k === 'ia' ? 'IA' : 'TECH') + '</span><span class="pb-n">' + esc(p.n || '') + '</span></div>';
+      pbArt.innerHTML = ban + '<div class="art-tags">' + p.g.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('') + '</div>' + p.h;
       pbBody.scrollTop = 0;
     }
     function openPost(k, i) {
@@ -252,4 +255,65 @@
       }
     });
   }
+
+  // ---------- contato em painel (off-canvas, sobe de baixo para cima) ----------
+  var cp = document.getElementById('cp');
+  if (cp) {
+    var cpClose = document.getElementById('cpClose'), cpBody = document.getElementById('cpBody'), cpLast = null;
+    var cpFocusable = function () { return Array.prototype.slice.call(cp.querySelectorAll('a[href],button,input,select,textarea')).filter(function (el) { return !el.disabled && el.offsetParent !== null; }); };
+    var gotoForm = function () {
+      var f = document.getElementById('form-contato'); if (!f) return;
+      cpBody.scrollTo({ top: f.getBoundingClientRect().top - cpBody.getBoundingClientRect().top + cpBody.scrollTop - 40, behavior: 'smooth' });
+      var i = f.querySelector('input'); if (i) i.focus({ preventScroll: true });
+    };
+    var openCp = function () {
+      if (cp.classList.contains('on')) return;
+      cpLast = document.activeElement; document.body.classList.remove('menu-open');
+      cp.classList.add('on'); cp.setAttribute('aria-hidden', 'false'); document.documentElement.style.overflow = 'hidden';
+      cpBody.scrollTop = 0; cpClose.focus({ preventScroll: true });
+    };
+    var closeCp = function () {
+      if (!cp.classList.contains('on')) return;
+      cp.classList.remove('on'); cp.setAttribute('aria-hidden', 'true'); document.documentElement.style.overflow = '';
+      if (location.hash === '#contato') history.replaceState(null, '', location.pathname + location.search);
+      if (cpLast && cpLast.focus) cpLast.focus({ preventScroll: true });
+    };
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href]'); if (!a || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      var h = a.getAttribute('href');
+      if (h === '#contato') { e.preventDefault(); openCp(); return; }
+      if (cp.classList.contains('on') && cp.contains(a)) {
+        if (h === '#form-contato') { e.preventDefault(); gotoForm(); }
+        else if (h.charAt(0) === '#') closeCp();             // links internos (#topo, #tech…) fecham o painel e seguem para a seção
+      }
+    });
+    cpClose.addEventListener('click', closeCp);
+    cp.addEventListener('click', function (e) { if (e.target === cp) closeCp(); });
+    document.addEventListener('keydown', function (e) {
+      if (!cp.classList.contains('on')) return;
+      if (e.key === 'Escape') closeCp();
+      else if (e.key === 'Tab') {
+        var f = cpFocusable(); if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    window.addEventListener('hashchange', function () { if (location.hash === '#contato') openCp(); });
+    if (location.hash === '#contato') openCp();
+  }
+
+  // ---------- navbar do mobile: recolhe ao rolar para baixo e reaparece ao rolar para cima ----------
+  (function () {
+    var lastY = window.pageYOffset || 0, tick = false;
+    function update() {
+      tick = false;
+      var y = Math.max(0, window.pageYOffset || 0), d = y - lastY;
+      if (document.body.classList.contains('menu-open') || y < 60) document.body.classList.remove('nav-hide');
+      else if (d > 6) document.body.classList.add('nav-hide');
+      else if (d < -6) document.body.classList.remove('nav-hide');
+      if (Math.abs(d) > 6) lastY = y;
+    }
+    window.addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(update); } }, { passive: true });
+    document.addEventListener('focusin', function (e) { if (e.target.closest && e.target.closest('.hd')) document.body.classList.remove('nav-hide'); });
+  })();
 })();
