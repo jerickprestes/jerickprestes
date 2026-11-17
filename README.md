@@ -8,8 +8,9 @@ Portfólio de design gráfico, web e automação com IA. Site estático (HTML, C
 
 ```
 index.html        página principal
+publicacoes.html  todas as publicações (TECH e IA)
 css/style.css     estilos
-js/main.js        menu, carrossel do hero, lightboxes e formulário (WhatsApp)
+js/main.js        menu (recolhe ao rolar no celular), carrossel do hero, lightboxes, painel de contato (off-canvas) e formulário (WhatsApp)
 fonts/            BauhausBox (títulos), Inter (texto) e Liberation Mono (rótulos)
 img/              imagens: hero, projetos do Behance, layouts, logos e artigos
 data/             dados dos projetos do Behance
@@ -21,6 +22,9 @@ posts/            artigos das seções TECH e IA (Markdown)
 
 - O `index.html` é **gerado** a partir do conteúdo deste repositório. Não edite o arquivo à mão: as alterações seriam perdidas na próxima geração.
 - Os artigos ficam em `posts/tech/` e `posts/ia/`, um arquivo `.md` por artigo.
+- A home mostra até 6 publicações por seção (TECH e IA); o botão "Todas as publicações" abre `publicacoes.html`. Ao abrir uma publicação, a capa aparece como banner no topo.
+- O contato abre como painel off-canvas, de baixo para cima (links `#contato`).
+- Posts podem ser publicados pelo painel local com "Importar pacote" (rascunho por padrão).
 - Para ver localmente, abra o `index.html` no navegador ou rode `python3 -m http.server 8000` nesta pasta.
 
 ## Contato
