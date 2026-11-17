@@ -20,6 +20,7 @@ posts/            artigos das seções TECH e IA (Markdown)
 
 ## Observações
 
+- Este repositório é **atualizado automaticamente** a partir do projeto privado: não edite aqui (a próxima publicação sobrescreve).
 - O `index.html` é **gerado** a partir do conteúdo deste repositório. Não edite o arquivo à mão: as alterações seriam perdidas na próxima geração.
 - Os artigos ficam em `posts/tech/` e `posts/ia/`, um arquivo `.md` por artigo.
 - A home mostra até 6 publicações por seção (TECH e IA); o botão "Todas as publicações" abre `publicacoes.html`. Ao abrir uma publicação, a capa aparece como banner no topo.
