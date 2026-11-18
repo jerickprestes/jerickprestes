@@ -48,7 +48,7 @@
         track.appendChild(cl);
       }
     }
-    var cards = track.children, x = 0, target = 0, dragging = false, startX = 0, startPos = 0, lastX = 0, lastT = 0, vel = 0, moved = 0, raf = null, ci = 0;
+    var capId = null, pid = null, cards = track.children, x = 0, target = 0, dragging = false, startX = 0, startPos = 0, lastX = 0, lastT = 0, vel = 0, moved = 0, raf = null, ci = 0;
     function step() { return cards[1].offsetLeft - cards[0].offsetLeft; }
     function per() { return n * step(); }
     function wrap() {   // mantém x no conjunto do meio: (-2P, -P]
@@ -71,13 +71,13 @@
     car.addEventListener('pointerdown', function (e) {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
       if (e.target.closest && e.target.closest('button')) return;
-      dragging = true; moved = 0; startX = lastX = e.clientX; startPos = x; lastT = performance.now(); vel = 0;
-      car.setPointerCapture(e.pointerId);
+      dragging = true; moved = 0; startX = lastX = e.clientX; startPos = x; lastT = performance.now(); vel = 0; capId = null; pid = e.pointerId;
+      // sem setPointerCapture aqui: capturar já no pointerdown redireciona o "click" para o carrossel e os links/botões dos cards deixam de funcionar
     });
     car.addEventListener('pointermove', function (e) {
       if (!dragging) return;
       var dx = e.clientX - startX; moved = Math.max(moved, Math.abs(dx));
-      if (moved > 4) car.classList.add('dragging');
+      if (moved > 4) { car.classList.add('dragging'); if (capId === null) { capId = pid; try { car.setPointerCapture(pid); } catch (_) {} } }   // só captura quando vira arrasto
       var now = performance.now(), dt = Math.max(1, now - lastT);
       vel = 0.8 * vel + 0.2 * ((e.clientX - lastX) / dt); lastX = e.clientX; lastT = now;
       target = startPos + dx; if (!raf) raf = requestAnimationFrame(tick);
